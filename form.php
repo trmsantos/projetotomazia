@@ -18,6 +18,11 @@ try {
             die("Erro: Token CSRF inválido.");
         }
 
+        // Verificar se os termos e condições foram aceitos
+        if (!isset($_POST['termos']) || $_POST['termos'] !== 'on') {
+            die("Erro: Você deve aceitar os Termos e Condições para continuar.");
+        }
+
         $nome = htmlspecialchars($_POST['nome']);
         $email = htmlspecialchars($_POST['email']);
         $telefone = htmlspecialchars($_POST['telefone']);

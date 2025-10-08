@@ -38,3 +38,4 @@ build/
 
 # Test files
 /tmp/
+test-*.html
