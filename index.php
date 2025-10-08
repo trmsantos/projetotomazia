@@ -145,9 +145,8 @@ try {
 </head>
 <body>
     <!-- Video Background -->
-    <!-- Note: Change 'cocktail-video.mp4' to match your actual video filename -->
     <video class="video-background" autoplay loop muted playsinline>
-        <source src="img/cocktail-video.mp4" type="video/mp4">
+        <source src="img/3772392-hd_1920_1080_25fps.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <div class="video-overlay"></div>
