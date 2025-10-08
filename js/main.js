@@ -43,4 +43,37 @@ document.addEventListener('DOMContentLoaded', function() {
         element.classList.add('fade-in-on-scroll');
         observer.observe(element);
     });
+
+    // Terms and Conditions validation
+    const registrationForm = document.getElementById('registrationForm');
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', function(e) {
+            const termsCheckbox = document.getElementById('termos');
+            const termsError = document.getElementById('termsError');
+            
+            if (termsCheckbox && !termsCheckbox.checked) {
+                e.preventDefault();
+                if (termsError) {
+                    termsError.style.display = 'block';
+                }
+                termsCheckbox.focus();
+                return false;
+            } else {
+                if (termsError) {
+                    termsError.style.display = 'none';
+                }
+            }
+        });
+
+        // Hide error message when checkbox is checked
+        const termsCheckbox = document.getElementById('termos');
+        if (termsCheckbox) {
+            termsCheckbox.addEventListener('change', function() {
+                const termsError = document.getElementById('termsError');
+                if (this.checked && termsError) {
+                    termsError.style.display = 'none';
+                }
+            });
+        }
+    }
 });

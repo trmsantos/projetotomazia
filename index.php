@@ -37,16 +37,21 @@ try {
     <title>Bar da Tomazia</title>
     <link rel="icon" href="img/pngico.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css"> 
     <style>
         body {
             position: relative;
             min-height: 100vh;
+            background-color: #1a1a1a;
         }
 
         .navbar {
             position: relative;
             z-index: 10;
+            background-color: rgba(26, 26, 26, 0.95) !important;
         }
 
         .container {
@@ -57,30 +62,84 @@ try {
         }
 
         .form-container {
-            max-width: 400px;
+            max-width: 450px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            background-color: rgba(26, 26, 26, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
         .form-container h2 {
-            color: #A52A2A;
+            color: #D4AF37;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        .form-group label {
+            color: #f0f0f0;
+            font-weight: 600;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            color: #f0f0f0;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #D4AF37;
+            color: #ffffff;
         }
 
         .btn {
-            background-color: #A52A2A;
-            color: white;
-            border-color: #A52A2A;
+            background-color: #D4AF37;
+            color: #1a1a1a;
+            border-color: #D4AF37;
+            font-weight: 600;
+            padding: 12px;
+            transition: all 0.3s ease;
         }
 
         .btn:hover {
-            color: black;
-            background-color: white;
-            border-color: #A52A2A;
+            color: #D4AF37;
+            background-color: transparent;
+            border-color: #D4AF37;
+        }
+
+        .form-check-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .form-check-label a {
+            color: #D4AF37;
+            text-decoration: none;
+        }
+
+        .form-check-label a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #D4AF37;
+        }
+
+        .form-check-input:checked {
+            background-color: #D4AF37;
+            border-color: #D4AF37;
+        }
+
+        #termsError {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -93,13 +152,23 @@ try {
     </video>
     <div class="video-overlay"></div>
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="index.php"><img src="img/tomazia.png" height="100"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Início</a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <div class="container">
         <div class="form-container">
             <h2>Bem-vindo ao Bar da Tomazia</h2>
-            <form method="POST" action="form.php">
+            <form method="POST" action="form.php" id="registrationForm">
                 <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                 <div class="form-group">
                     <label for="nome">Nome</label>
@@ -112,6 +181,13 @@ try {
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
                     <input type="text" class="form-control" id="telefone" name="telefone" required>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="termos" name="termos" required>
+                    <label class="form-check-label" for="termos">
+                        Eu li e aceito os <a href="termos.php" target="_blank">Termos e Condições</a>
+                    </label>
+                    <div id="termsError" style="display:none;">Você deve aceitar os Termos e Condições para continuar.</div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Enviar</button>
             </form>
