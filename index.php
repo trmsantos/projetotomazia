@@ -39,9 +39,36 @@ try {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css"> 
     <style>
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
         .form-container {
             max-width: 400px;
             margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container h2 {
+            color: #A52A2A;
+            text-align: center;
+            margin-bottom: 25px;
         }
 
         .btn {
@@ -57,10 +84,18 @@ try {
         }
     </style>
 </head>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.php"><img src="img/tomazia.png" height="100"></a>
-</nav>
 <body>
+    <!-- Video Background -->
+    <!-- Note: Change 'cocktail-video.mp4' to match your actual video filename -->
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="img/cocktail-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.php"><img src="img/tomazia.png" height="100"></a>
+    </nav>
     <div class="container">
         <div class="form-container">
             <h2>Bem-vindo ao Bar da Tomazia</h2>
@@ -85,5 +120,6 @@ try {
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
