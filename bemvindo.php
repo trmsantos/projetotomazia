@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'config.php';
 
 // Verifique se o nome do usuário está na sessão
 if (!isset($_SESSION['nome'])) {
@@ -80,8 +81,8 @@ $nome = $_SESSION['nome'];
         </div>
 
         <div class="password-container" id="PWContainer">
-            <p><strong>Rede:</strong> NOS-2B6E-5</p>
-            <p><strong>Password:</strong> 5YV4UJC4</p>
+            <p><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
+            <p><strong>Password:</strong> <?php echo htmlspecialchars(WIFI_PASSWORD); ?></p>
         </div>
 
         <a href="cardapio.php" class="btn btn-primary mt-4">Ir para o Cardápio</a>

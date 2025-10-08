@@ -1,14 +1,14 @@
 <?php
 session_start();
+require_once 'config.php';
 
 try {
-    $db = new SQLite3(__DIR__ . '/bd/bd_teste.db');
+    $db = getDbConnection();
     
-
     // Verificar se o cookie 'user_id' existe
     if (!isset($_COOKIE['user_id'])) {
         $userId = bin2hex(random_bytes(16)); 
-        setcookie('user_id', $userId, time() + (10 * 365 * 24 * 60 * 60)); 
+        setSecureCookie('user_id', $userId, time() + (10 * 365 * 24 * 60 * 60));
     } else {
         $userId = $_COOKIE['user_id']; 
     }
@@ -25,7 +25,8 @@ try {
         exit;
     }
 } catch (Exception $e) {
-    echo "Erro: " . $e->getMessage();
+    error_log("Error in index.php: " . $e->getMessage());
+    echo "Erro: Ocorreu um problema. Por favor, tente novamente.";
 }
 ?>
 <!DOCTYPE html>
@@ -64,6 +65,7 @@ try {
         <div class="form-container">
             <h2>Bem-vindo ao Bar da Tomazia</h2>
             <form method="POST" action="form.php">
+                <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" class="form-control" id="nome" name="nome" required>

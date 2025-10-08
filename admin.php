@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'config.php';
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php');
@@ -12,41 +13,56 @@ if (isset($_POST['logout'])) {
     exit;
 }
 
-$db = new SQLite3('C:\Users\sara1\OneDrive\Desktop\BD\bd_teste.db');
+try {
+    $db = getDbConnection();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['logout'])) {
-    if (isset($_POST['nome_prod'], $_POST['preco'], $_POST['tipo'])) {
-        $nome_prod = $_POST['nome_prod'];
-        $preco = $_POST['preco'];
-        $tipo = $_POST['tipo'];
-
-        if ($preco >= 0) {
-            if (isset($_POST['id_produto'])) {
-                // Atualizar produto existente
-                $id_produto = $_POST['id_produto'];
-                $stmt = $db->prepare('UPDATE produtos SET nome_prod = :nome_prod, preco = :preco, tipo = :tipo WHERE id_produto = :id_produto');
-                $stmt->bindValue(':id_produto', $id_produto, SQLITE3_INTEGER);
-            } else {
-                // Inserir novo produto
-                $stmt = $db->prepare('INSERT INTO produtos (nome_prod, preco, tipo) VALUES (:nome_prod, :preco, :tipo)');
-            }
-            $stmt->bindValue(':nome_prod', $nome_prod, SQLITE3_TEXT);
-            $stmt->bindValue(':preco', $preco, SQLITE3_FLOAT);
-            $stmt->bindValue(':tipo', $tipo, SQLITE3_TEXT);
-            $stmt->execute();
-        } else {
-            echo "<script>alert('O preço não pode ser negativo');</script>";
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['logout'])) {
+        // Verificar token CSRF
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) {
+            die("Erro: Token CSRF inválido.");
         }
-    } else {
-        echo "<script>alert('Produto Eliminado Com Sucesso!');</script>";
-    }
-}
 
-if (isset($_POST['delete'])) {
-    $id_produto = $_POST['id_produto'];
-    $stmt = $db->prepare('DELETE FROM produtos WHERE id_produto = :id_produto');
-    $stmt->bindValue(':id_produto', $id_produto, SQLITE3_INTEGER);
-    $stmt->execute();
+        if (isset($_POST['nome_prod'], $_POST['preco'], $_POST['tipo'])) {
+            $nome_prod = htmlspecialchars($_POST['nome_prod']);
+            $preco = $_POST['preco'];
+            $tipo = htmlspecialchars($_POST['tipo']);
+
+            if ($preco >= 0) {
+                if (isset($_POST['id_produto'])) {
+                    // Atualizar produto existente
+                    $id_produto = $_POST['id_produto'];
+                    $stmt = $db->prepare('UPDATE produtos SET nome_prod = :nome_prod, preco = :preco, tipo = :tipo WHERE id_produto = :id_produto');
+                    $stmt->bindValue(':id_produto', $id_produto, SQLITE3_INTEGER);
+                } else {
+                    // Inserir novo produto
+                    $stmt = $db->prepare('INSERT INTO produtos (nome_prod, preco, tipo) VALUES (:nome_prod, :preco, :tipo)');
+                }
+                $stmt->bindValue(':nome_prod', $nome_prod, SQLITE3_TEXT);
+                $stmt->bindValue(':preco', $preco, SQLITE3_FLOAT);
+                $stmt->bindValue(':tipo', $tipo, SQLITE3_TEXT);
+                $stmt->execute();
+            } else {
+                echo "<script>alert('O preço não pode ser negativo');</script>";
+            }
+        } else {
+            echo "<script>alert('Produto Eliminado Com Sucesso!');</script>";
+        }
+    }
+
+    if (isset($_POST['delete'])) {
+        // Verificar token CSRF
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) {
+            die("Erro: Token CSRF inválido.");
+        }
+        
+        $id_produto = $_POST['id_produto'];
+        $stmt = $db->prepare('DELETE FROM produtos WHERE id_produto = :id_produto');
+        $stmt->bindValue(':id_produto', $id_produto, SQLITE3_INTEGER);
+        $stmt->execute();
+    }
+} catch (Exception $e) {
+    error_log("Error in admin.php: " . $e->getMessage());
+    die("Erro: Ocorreu um problema. Por favor, tente novamente.");
 }
 
 $edit_nome_prod = $edit_preco = $edit_tipo = '';
@@ -196,6 +212,7 @@ for ($i = 1; $i <= 12; $i++) {
         <div id="insert" class="section form-section">
             <h2>Inserir Novo Produto</h2>
             <form id="productForm" method="POST" action="admin.php">
+                <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                 <div class="form-group">
                     <label for="nome_prod">Nome do Produto</label>
                     <input type="text" class="form-control" id="nome_prod" name="nome_prod" required>
@@ -229,6 +246,7 @@ for ($i = 1; $i <= 12; $i++) {
         <div id="edit" class="section form-section">
             <h2><?php echo isset($_GET['edit']) ? 'Editar Produto' : 'Eliminar Produto'; ?></h2>
             <form id="editForm" method="POST" action="admin.php">
+                <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                 <input type="hidden" name="id_produto" value="<?php echo htmlspecialchars($id_produto); ?>">
                 <div class="form-group">
                     <label for="nome_prod">Nome do Produto</label>

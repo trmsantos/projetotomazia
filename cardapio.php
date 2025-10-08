@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'config.php';
 
 // Verifique se o nome do usuário está na sessão
 if (!isset($_SESSION['nome'])) {
@@ -21,7 +22,12 @@ function fetchMenuItems($db, $category) {
     return $items;
 }
 
-$db = new SQLite3(__DIR__ . '/bd/bd_teste.db');
+try {
+    $db = getDbConnection();
+} catch (Exception $e) {
+    error_log("Error in cardapio.php: " . $e->getMessage());
+    die("Erro ao carregar o cardápio.");
+}
 
 $query = $db->query('SELECT DISTINCT tipo FROM produtos');
 $categories = [];
