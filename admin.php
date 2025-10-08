@@ -60,6 +60,36 @@ try {
         $stmt->bindValue(':id_produto', $id_produto, SQLITE3_INTEGER);
         $stmt->execute();
     }
+
+    // Gestão de Eventos
+    if (isset($_POST['nome_evento'], $_POST['data_evento'])) {
+        $nome_evento = htmlspecialchars($_POST['nome_evento']);
+        $data_evento = htmlspecialchars($_POST['data_evento']);
+        $descricao = htmlspecialchars($_POST['descricao'] ?? '');
+        $imagem_url = htmlspecialchars($_POST['imagem_url'] ?? '');
+
+        if (isset($_POST['id_evento'])) {
+            // Atualizar evento existente
+            $id_evento = $_POST['id_evento'];
+            $stmt = $db->prepare('UPDATE eventos SET nome_evento = :nome_evento, data_evento = :data_evento, descricao = :descricao, imagem_url = :imagem_url WHERE id = :id');
+            $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
+        } else {
+            // Inserir novo evento
+            $stmt = $db->prepare('INSERT INTO eventos (nome_evento, data_evento, descricao, imagem_url) VALUES (:nome_evento, :data_evento, :descricao, :imagem_url)');
+        }
+        $stmt->bindValue(':nome_evento', $nome_evento, SQLITE3_TEXT);
+        $stmt->bindValue(':data_evento', $data_evento, SQLITE3_TEXT);
+        $stmt->bindValue(':descricao', $descricao, SQLITE3_TEXT);
+        $stmt->bindValue(':imagem_url', $imagem_url, SQLITE3_TEXT);
+        $stmt->execute();
+    }
+
+    if (isset($_POST['delete_event'])) {
+        $id_evento = $_POST['id_evento'];
+        $stmt = $db->prepare('DELETE FROM eventos WHERE id = :id');
+        $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
+        $stmt->execute();
+    }
 } catch (Exception $e) {
     error_log("Error in admin.php: " . $e->getMessage());
     die("Erro: Ocorreu um problema. Por favor, tente novamente.");
@@ -74,6 +104,21 @@ if (isset($_GET['edit']) || isset($_GET['delete'])) {
     $edit_nome_prod = $result['nome_prod'];
     $edit_preco = $result['preco'];
     $edit_tipo = $result['tipo'];
+}
+
+// Variáveis para edição de eventos
+$edit_nome_evento = $edit_data_evento = $edit_descricao = $edit_imagem_url = '';
+if (isset($_GET['edit_event']) || isset($_GET['delete_event'])) {
+    $id_evento = isset($_GET['edit_event']) ? $_GET['edit_event'] : $_GET['delete_event'];
+    $stmt = $db->prepare('SELECT * FROM eventos WHERE id = :id');
+    $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    if ($result) {
+        $edit_nome_evento = $result['nome_evento'];
+        $edit_data_evento = $result['data_evento'];
+        $edit_descricao = $result['descricao'];
+        $edit_imagem_url = $result['imagem_url'];
+    }
 }
 
 // Obter anos disponíveis na base de dados
@@ -203,8 +248,9 @@ for ($i = 1; $i <= 12; $i++) {
 <div class="container">
     <div class="sidebar">
         <img src="img/tomazia.png" alt="Tomazia">
-        <a href="#" onclick="showSection('insert')">Inserir</a>
-        <a href="#" onclick="showSection('manage')">Gerir</a>
+        <a href="#" onclick="showSection('insert')">Inserir Produto</a>
+        <a href="#" onclick="showSection('manage')">Gerir Produtos</a>
+        <a href="#" onclick="showSection('events')">Gerir Eventos</a>
         <a href="#" onclick="showSection('adherence')">Adesão</a>
     </div>
     <div class="content">
@@ -346,6 +392,87 @@ for ($i = 1; $i <= 12; $i++) {
             </table>
         </div>
 
+        <!-- Gestão de Eventos -->
+        <div id="events" class="section">
+            <h2>Gestão de Eventos</h2>
+            
+            <!-- Formulário para Inserir/Editar Eventos -->
+            <div class="form-section mb-4">
+                <h3><?php echo isset($_GET['edit_event']) ? 'Editar Evento' : 'Inserir Novo Evento'; ?></h3>
+                <form method="POST" action="admin.php">
+                    <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                    <?php if (isset($_GET['edit_event'])): ?>
+                        <input type="hidden" name="id_evento" value="<?php echo htmlspecialchars($_GET['edit_event']); ?>">
+                    <?php endif; ?>
+                    <div class="form-group">
+                        <label for="nome_evento">Nome do Evento</label>
+                        <input type="text" class="form-control" id="nome_evento" name="nome_evento" value="<?php echo htmlspecialchars($edit_nome_evento); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_evento">Data do Evento</label>
+                        <input type="date" class="form-control" id="data_evento" name="data_evento" value="<?php echo htmlspecialchars($edit_data_evento); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="3"><?php echo htmlspecialchars($edit_descricao); ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="imagem_url">URL da Imagem (opcional)</label>
+                        <input type="text" class="form-control" id="imagem_url" name="imagem_url" value="<?php echo htmlspecialchars($edit_imagem_url); ?>">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><?php echo isset($_GET['edit_event']) ? 'Atualizar' : 'Inserir'; ?></button>
+                    <?php if (isset($_GET['edit_event'])): ?>
+                        <a href="admin.php#events" class="btn btn-secondary">Cancelar</a>
+                    <?php endif; ?>
+                </form>
+            </div>
+
+            <!-- Tabela de Eventos -->
+            <div class="table-section">
+                <h3>Lista de Eventos</h3>
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome do Evento</th>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Imagem URL</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $stmt = $db->prepare('SELECT * FROM eventos ORDER BY data_evento DESC');
+                        $result = $stmt->execute();
+                        $hasEvents = false;
+                        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                            $hasEvents = true;
+                            echo '<tr>';
+                            echo '<td>' . htmlspecialchars($row['id']) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['nome_evento']) . '</td>';
+                            echo '<td>' . htmlspecialchars($row['data_evento']) . '</td>';
+                            echo '<td>' . htmlspecialchars(substr($row['descricao'], 0, 50)) . (strlen($row['descricao']) > 50 ? '...' : '') . '</td>';
+                            echo '<td>' . htmlspecialchars($row['imagem_url']) . '</td>';
+                            echo '<td>';
+                            echo '<a href="admin.php?edit_event=' . htmlspecialchars($row['id']) . '#events" class="btn btn-warning btn-sm">Editar</a> ';
+                            echo '<form method="POST" action="admin.php" style="display:inline;">';
+                            echo '<input type="hidden" name="' . CSRF_TOKEN_NAME . '" value="' . generateCsrfToken() . '">';
+                            echo '<input type="hidden" name="id_evento" value="' . htmlspecialchars($row['id']) . '">';
+                            echo '<button type="submit" name="delete_event" class="btn btn-danger btn-sm" onclick="return confirm(\'Tem certeza que deseja eliminar este evento?\')">Eliminar</button>';
+                            echo '</form>';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                        if (!$hasEvents) {
+                            echo '<tr><td colspan="6" class="text-center">Não existem eventos cadastrados</td></tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
    
         <!-- Gráfico de Aderência -->
         <div id="adherence" class="section chart-section">
@@ -382,11 +509,15 @@ function showSection(sectionId) {
 // Mostrar a seção "Gerir" por padrão se houver filtragem, caso contrário, "Inserir"
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
+    const hash = window.location.hash.substring(1);
+    
     if (urlParams.has('filter_tipo')) {
         showSection('manage');
         document.getElementById('filter_tipo').value = urlParams.get('filter_tipo');
     } else if (urlParams.has('edit') || urlParams.has('delete')) {
         showSection('edit');
+    } else if (urlParams.has('edit_event') || urlParams.has('delete_event') || hash === 'events') {
+        showSection('events');
     } else if (urlParams.has('year')) {
         showSection('adherence');
     } else {
