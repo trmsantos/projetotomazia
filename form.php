@@ -1,20 +1,26 @@
 <?php
 session_start();
+require_once 'config.php';
 
 try {
-    $db = new SQLite3(__DIR__ . '/bd/bd_teste.db');
+    $db = getDbConnection();
 
     if (!isset($_COOKIE['user_id'])) {
         $userId = bin2hex(random_bytes(16)); 
-        setcookie('user_id', $userId, time() + (10 * 365 * 24 * 60 * 60)); 
+        setSecureCookie('user_id', $userId, time() + (10 * 365 * 24 * 60 * 60));
     } else {
         $userId = $_COOKIE['user_id']; 
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $telefone = $_POST['telefone'];
+        // Verificar token CSRF
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) {
+            die("Erro: Token CSRF inválido.");
+        }
+
+        $nome = htmlspecialchars($_POST['nome']);
+        $email = htmlspecialchars($_POST['email']);
+        $telefone = htmlspecialchars($_POST['telefone']);
         $data_registro = date('Y-m-d H:i:s');
 
         $query = $db->prepare('SELECT COUNT(*) as count FROM tomazia_clientes WHERE user_id = :user_id');
@@ -38,6 +44,7 @@ try {
         }
     }
 } catch (Exception $e) {
-    echo "Erro: " . $e->getMessage();
+    error_log("Error in form.php: " . $e->getMessage());
+    echo "Erro: Ocorreu um problema. Por favor, tente novamente.";
 }
 ?>

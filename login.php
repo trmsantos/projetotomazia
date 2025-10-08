@@ -1,43 +1,50 @@
 <?php
 session_start();
+require_once 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['register'])) {
-        // Registro de novo administrador
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Verificar token CSRF
+    if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) {
+        die("Erro: Token CSRF inválido.");
+    }
 
-        // Conexão com a base de dados SQLite
-        $db = new SQLite3('C:\Users\sara1\OneDrive\Desktop\BD\bd_teste.db');
+    try {
+        $db = getDbConnection();
 
-        // Inserir novo administrador na base de dados
-        $stmt = $db->prepare('INSERT INTO admin_users (username, psw) VALUES (:username, :password)');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $stmt->bindValue(':password', $hashed_password, SQLITE3_TEXT);
-        $stmt->execute();
+        if (isset($_POST['register'])) {
+            // Registro de novo administrador
+            $username = htmlspecialchars($_POST['username']);
+            $password = $_POST['password'];
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $success = "Administrador registrado com sucesso!";
-    } else {
-        // Login de administrador
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+            // Inserir novo administrador na base de dados
+            $stmt = $db->prepare('INSERT INTO admin_users (username, psw) VALUES (:username, :password)');
+            $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+            $stmt->bindValue(':password', $hashed_password, SQLITE3_TEXT);
+            $stmt->execute();
 
-        // Conexão com a base de dados SQLite
-        $db = new SQLite3('C:\Users\sara1\OneDrive\Desktop\BD\bd_teste.db');
-
-        // Verificar as credenciais na base de dados
-        $stmt = $db->prepare('SELECT * FROM admin_users WHERE username = :username');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-
-        if ($result && password_verify($password, $result['psw'])) {
-            $_SESSION['loggedin'] = true;
-            header('Location: admin.php');
-            exit;
+            $success = "Administrador registrado com sucesso!";
         } else {
-            $error = "Credenciais inválidas!";
+            // Login de administrador
+            $username = htmlspecialchars($_POST['username']);
+            $password = $_POST['password'];
+
+            // Verificar as credenciais na base de dados
+            $stmt = $db->prepare('SELECT * FROM admin_users WHERE username = :username');
+            $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+            $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+            if ($result && password_verify($password, $result['psw'])) {
+                $_SESSION['loggedin'] = true;
+                header('Location: admin.php');
+                exit;
+            } else {
+                $error = "Credenciais inválidas!";
+            }
         }
+    } catch (Exception $e) {
+        error_log("Error in login.php: " . $e->getMessage());
+        $error = "Erro: Ocorreu um problema. Por favor, tente novamente.";
     }
 }
 ?>
@@ -81,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php endif; ?>
         <form method="POST" action="login.php">
+            <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
             <div class="form-group">
                 <label for="username">Nome de Utilizador</label>
                 <input type="text" class="form-control" id="username" name="username" required>
