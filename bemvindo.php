@@ -221,7 +221,7 @@ $nome = $_SESSION['nome'];
         </video>
         <div class="video-overlay"></div>
         <div class="hero-content">
-            <h1>Bem-vindo, <?php echo htmlspecialchars($nome); ?>!</h1>
+            <h1>Bem-vindo(a), <?php echo htmlspecialchars($nome); ?>!</h1>
             <p>Estamos felizes em vê-lo(a) no Bar da Tomazia!</p>
             <a href="#wifi" class="btn btn-custom">Conectar ao WiFi</a>
         </div>
@@ -231,7 +231,7 @@ $nome = $_SESSION['nome'];
         <div class="container">
             <h2>WiFi Gratuito</h2>
             <div class="wifi-card text-center p-4" style="max-width: 400px; margin: 0 auto;">
-                <p>Clique na imagem para mostrar/esconder as credenciais:</p>
+                <p>Clique na imagem para mostrar os dados WI-FI:</p>
                 <img src="img/wifi.png" alt="WiFi" onclick="toggleWiFi()" style="width: 150px; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="wifi-info" id="wifiInfo" style="display: none; margin-top: 20px;">
                     <p style="text-align: left; background-color: #D4AF37; color: #1a1a1a; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
@@ -251,7 +251,7 @@ $nome = $_SESSION['nome'];
         <div class="container">
             <h2>Nosso Cardápio</h2>
             <div class="text-center">
-                <p class="lead" style="color: #a0a0a0;">Descubra nossa seleção de bebidas e petiscos</p>
+                <p class="lead" style="color: #a0a0a0;">Descubra a nossa seleção</p>
                 <a href="cardapio.php" class="btn btn-custom mt-3">Ver Cardápio Completo</a>
             </div>
         </div>
@@ -259,7 +259,7 @@ $nome = $_SESSION['nome'];
 
     <section id="eventos" class="events-section">
         <div class="container">
-            <h2>Eventos do Bar</h2>
+            <h2>Eventos</h2>
             <div class="row">
                 <?php
                 try {
