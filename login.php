@@ -14,13 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = trim($_POST['username']);
         $password = $_POST['password'];
 
-        // ALTERA AQUI se a tua tabela/campo forem diferentes!
-        $stmt = $db->prepare('SELECT * FROM admin WHERE username = :username');
+        $stmt = $db->prepare('SELECT * FROM admin_users WHERE username = :username');
         $stmt->bindValue(':username', $username, SQLITE3_TEXT);
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
-        // ALTERA AQUI se o campo da password for diferente!
-        if ($result && password_verify($password, $result['password'])) {
+        if ($result && password_verify($password, $result['psw'])) {
             $_SESSION['loggedin'] = true;
             header('Location: admin.php');
             exit;
@@ -39,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Bar da Tomazia</title>
-    <link rel="icon" href="img/pngico.png" type="image/png">
+    <link rel="icon" href="img/tomazia.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>

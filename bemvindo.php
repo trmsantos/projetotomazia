@@ -15,7 +15,7 @@ $nome = $_SESSION['nome'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bar da Tomazia</title>
-    <link rel="icon" href="img/pngico.png" type="image/png">
+    <link rel="icon" href="img/tomazia.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -269,11 +269,15 @@ $nome = $_SESSION['nome'];
                     $hasEvents = false;
                     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                         $hasEvents = true;
-                        $data = new DateTime($row['data_evento']);
                         echo '<div class="col-md-6 col-lg-4 mb-4">';
                         echo '<div class="event-card p-3 h-100" style="transition: transform 0.3s;" onmouseover="this.style.transform=\'translateY(-5px)\'" onmouseout="this.style.transform=\'translateY(0)\'">';
                         echo '<h3>' . htmlspecialchars($row['nome_evento']) . '</h3>';
-                        echo '<p class="event-date">📅 ' . $data->format('d/m/Y') . '</p>';
+                        if (!empty($row['data_evento'])) {
+                            $data = DateTime::createFromFormat('Y-m-d', $row['data_evento']);
+                            if ($data) {
+                                echo '<p class="event-date">📅 ' . $data->format('d/m/Y') . '</p>';
+                            }
+                        }
                         echo '<p>' . htmlspecialchars($row['descricao']) . '</p>';
                         echo '</div>';
                         echo '</div>';
