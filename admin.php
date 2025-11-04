@@ -134,7 +134,7 @@ if (isset($_GET['edit_event'])) {
         :root {
             --background-dark: #1a1a1a;
             --surface-dark: #232323;
-            --primary-gold: #D4AF37;
+            --primary-gold: #8B4513;
             --text-light: #f0f0f0;
             --text-medium: #a0a0a0;
             --border-color: #333;
@@ -152,7 +152,7 @@ if (isset($_GET['edit_event'])) {
         .form-control, .custom-select { background: var(--background-dark); color: var(--text-light); border: 1px solid var(--border-color);}
         .form-control:focus, .custom-select:focus { border-color: var(--primary-gold); box-shadow: none; }
         .btn-primary { background: var(--primary-gold); border-color: var(--primary-gold); color: var(--background-dark); font-weight: 600;}
-        .btn-primary:hover { background: #c8a030; border-color: #c8a030;}
+        .btn-primary:hover { background: #A0522D; border-color: #A0522D;}
         .btn-outline-danger, .btn-outline-warning { border-radius: 4px; font-weight: 500;}
         .table { color: var(--text-light);}
         .table th { color: var(--primary-gold); border-top: none; }
@@ -321,8 +321,8 @@ if (isset($_GET['edit_event'])) {
                 datasets: [{
                     label: 'Novos Clientes',
                     data: <?php echo json_encode($chart_data); ?>,
-                    backgroundColor: 'rgba(212, 175, 55, 0.6)',
-                    borderColor: 'rgba(212, 175, 55, 1)',
+                    backgroundColor: 'rgba(139, 69, 19, 0.6)',
+                    borderColor: 'rgba(139, 69, 19, 1)',
                     borderWidth: 1
                 }]
             },

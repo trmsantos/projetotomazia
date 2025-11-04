@@ -67,7 +67,7 @@ $nome = $_SESSION['nome'];
             background: rgba(26, 26, 26, 0.9);
             padding: 15px;
             border-radius: 10px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(139, 69, 19, 0.3);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
@@ -83,7 +83,7 @@ $nome = $_SESSION['nome'];
         }
 
         .nav-menu a:hover {
-            background: #D4AF37;
+            background: #8B4513;
             color: #1a1a1a;
         }
         
@@ -101,9 +101,9 @@ $nome = $_SESSION['nome'];
         }
 
         .btn-custom {
-            background-color: #D4AF37;
+            background-color: #8B4513;
             color: #1a1a1a;
-            border: 2px solid #D4AF37;
+            border: 2px solid #8B4513;
             padding: 15px 30px;
             font-size: 1.2rem;
             border-radius: 5px;
@@ -113,7 +113,7 @@ $nome = $_SESSION['nome'];
 
         .btn-custom:hover {
             background-color: transparent;
-            color: #D4AF37;
+            color: #8B4513;
         }
         
         section { padding: 80px 20px; }
@@ -122,7 +122,7 @@ $nome = $_SESSION['nome'];
             font-size: 2.5rem;
             margin-bottom: 40px;
             font-family: 'Playfair Display', serif;
-            color: #D4AF37;
+            color: #8B4513;
         }
         
         .wifi-section { background-color: #1a1a1a; }
@@ -132,12 +132,12 @@ $nome = $_SESSION['nome'];
         .wifi-card, .event-card {
             background: #1e1e1e;
             color: #f0f0f0;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(139, 69, 19, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
         }
         
-        .event-card h3 { color: #D4AF37; }
+        .event-card h3 { color: #8B4513; }
         .event-card .event-date { color: #a0a0a0; }
 
         .btn-copy-icon {
@@ -173,7 +173,7 @@ $nome = $_SESSION['nome'];
             width: 30px;
             height: 3px;
             margin: 6px 0;
-            background-color: #D4AF37;
+            background-color: #8B4513;
             border-radius: 3px;
             transition: all 0.3s ease-in-out;
         }
@@ -234,8 +234,8 @@ $nome = $_SESSION['nome'];
                 <p>Clique na imagem para mostrar os dados WI-FI:</p>
                 <img src="img/wifi.png" alt="WiFi" onclick="toggleWiFi()" style="width: 150px; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="wifi-info" id="wifiInfo" style="display: none; margin-top: 20px;">
-                    <p style="text-align: left; background-color: #D4AF37; color: #1a1a1a; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
-                    <div style="display: flex; align-items: center; justify-content: space-between; background-color: #D4AF37; color: #1a1a1a; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
+                    <p style="text-align: left; background-color: #8B4513; color: #1a1a1a; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; background-color: #8B4513; color: #1a1a1a; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
                         <span><strong>Password:</strong> <span id="wifiPassword"><?php echo htmlspecialchars(WIFI_PASSWORD); ?></span></span>
                         <button onclick="copyWifiPassword()" class="btn-copy-icon" aria-label="Copiar password">
                             <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg>
