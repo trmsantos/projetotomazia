@@ -234,8 +234,8 @@ $nome = $_SESSION['nome'];
                 <p>Clique na imagem para mostrar os dados WI-FI:</p>
                 <img src="img/wifi.png" alt="WiFi" onclick="toggleWiFi()" style="width: 150px; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="wifi-info" id="wifiInfo" style="display: none; margin-top: 20px;">
-                    <p style="text-align: left; background-color: #D4AF37; color: #1a1a1a; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
-                    <div style="display: flex; align-items: center; justify-content: space-between; background-color: #D4AF37; color: #1a1a1a; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
+                    <p style="text-align: left; background-color: #A52A2A; color: #ffffff; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; background-color: #A52A2A; color: #ffffff; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
                         <span><strong>Password:</strong> <span id="wifiPassword"><?php echo htmlspecialchars(WIFI_PASSWORD); ?></span></span>
                         <button onclick="copyWifiPassword()" class="btn-copy-icon" aria-label="Copiar password">
                             <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg>
