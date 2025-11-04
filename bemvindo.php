@@ -67,7 +67,7 @@ $nome = $_SESSION['nome'];
             background: rgba(26, 26, 26, 0.9);
             padding: 15px;
             border-radius: 10px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(165, 42, 42, 0.3);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
@@ -83,8 +83,8 @@ $nome = $_SESSION['nome'];
         }
 
         .nav-menu a:hover {
-            background: #D4AF37;
-            color: #1a1a1a;
+            background: #A52A2A;
+            color: #ffffff;
         }
         
         .hero-content h1 {
@@ -101,9 +101,9 @@ $nome = $_SESSION['nome'];
         }
 
         .btn-custom {
-            background-color: #D4AF37;
-            color: #1a1a1a;
-            border: 2px solid #D4AF37;
+            background-color: #A52A2A;
+            color: #ffffff;
+            border: 2px solid #A52A2A;
             padding: 15px 30px;
             font-size: 1.2rem;
             border-radius: 5px;
@@ -112,8 +112,8 @@ $nome = $_SESSION['nome'];
         }
 
         .btn-custom:hover {
-            background-color: transparent;
-            color: #D4AF37;
+            background-color: #8B0000;
+            color: #ffffff;
         }
         
         section { padding: 80px 20px; }
@@ -122,7 +122,7 @@ $nome = $_SESSION['nome'];
             font-size: 2.5rem;
             margin-bottom: 40px;
             font-family: 'Playfair Display', serif;
-            color: #D4AF37;
+            color: #A52A2A;
         }
         
         .wifi-section { background-color: #1a1a1a; }
@@ -132,12 +132,12 @@ $nome = $_SESSION['nome'];
         .wifi-card, .event-card {
             background: #1e1e1e;
             color: #f0f0f0;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(165, 42, 42, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
         }
         
-        .event-card h3 { color: #D4AF37; }
+        .event-card h3 { color: #A52A2A; }
         .event-card .event-date { color: #a0a0a0; }
 
         .btn-copy-icon {
@@ -173,7 +173,7 @@ $nome = $_SESSION['nome'];
             width: 30px;
             height: 3px;
             margin: 6px 0;
-            background-color: #D4AF37;
+            background-color: #A52A2A;
             border-radius: 3px;
             transition: all 0.3s ease-in-out;
         }

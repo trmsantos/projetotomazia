@@ -134,7 +134,7 @@ if (isset($_GET['edit_event'])) {
         :root {
             --background-dark: #1a1a1a;
             --surface-dark: #232323;
-            --primary-gold: #D4AF37;
+            --primary-gold: #A52A2A;
             --text-light: #f0f0f0;
             --text-medium: #a0a0a0;
             --border-color: #333;
@@ -321,8 +321,8 @@ if (isset($_GET['edit_event'])) {
                 datasets: [{
                     label: 'Novos Clientes',
                     data: <?php echo json_encode($chart_data); ?>,
-                    backgroundColor: 'rgba(212, 175, 55, 0.6)',
-                    borderColor: 'rgba(212, 175, 55, 1)',
+                    backgroundColor: 'rgba(165, 42, 42, 0.6)',
+                    borderColor: 'rgba(165, 42, 42, 1)',
                     borderWidth: 1
                 }]
             },

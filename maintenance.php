@@ -39,7 +39,7 @@
             text-align: center;
         }
         .maintenance-container h1 {
-            color: #D4AF37;
+            color: #A52A2A;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-bottom: 18px;
@@ -67,7 +67,7 @@
             <h1>Em Manutenção</h1>
             <p>O Bar da Tomazia está temporariamente em manutenção.<br>
                Por favor, volte mais tarde.<br>
-               <small style="color:#D4AF37;">Estamos a preparar novidades para si!</small></p>
+               <small style="color:#A52A2A;">Estamos a preparar novidades para si!</small></p>
         </div>
     </div>
     <script>
@@ -83,10 +83,10 @@
 
         // Gear data
         const gears = [
-            {x: 180, y: 260, r: 55, teeth: 12, speed: 0.012, color: "#D4AF37", angle: 0},
+            {x: 180, y: 260, r: 55, teeth: 12, speed: 0.012, color: "#A52A2A", angle: 0},
             {x: 270, y: 340, r: 32, teeth: 8, speed: -0.02, color: "#a0a0a0", angle: 0},
             {x: 380, y: 220, r: 38, teeth: 10, speed: 0.017, color: "#f0f0f0", angle: 0},
-            {x: 600, y: 420, r: 60, teeth: 14, speed: -0.015, color: "#D4AF37", angle: 0},
+            {x: 600, y: 420, r: 60, teeth: 14, speed: -0.015, color: "#A52A2A", angle: 0},
             {x: 700, y: 200, r: 42, teeth: 8, speed: 0.021, color: "#a0a0a0", angle: 0}
         ];
         function drawGear(g) {

@@ -51,10 +51,10 @@ try {
             background-color: #1e1e1e;
             padding: 2rem 1rem;
             text-align: center;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(165, 42, 42, 0.2);
         }
         .header-cardapio h1 {
-            color: #D4AF37;
+            color: #A52A2A;
             font-family: 'Playfair Display', serif;
             font-size: 2.8rem;
             margin: 0;
@@ -63,7 +63,7 @@ try {
             position: absolute;
             top: 2.5rem;
             left: 1.5rem;
-            color: #D4AF37;
+            color: #A52A2A;
             font-size: 1.2rem;
             text-decoration: none;
         }
@@ -76,7 +76,7 @@ try {
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(165, 42, 42, 0.2);
         }
         .category-nav {
             display: flex;
@@ -90,8 +90,8 @@ try {
         }
         .category-btn {
             background: transparent;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            color: #D4AF37;
+            border: 1px solid rgba(165, 42, 42, 0.5);
+            color: #A52A2A;
             padding: 0.6rem 1.2rem;
             border-radius: 25px;
             cursor: pointer;
@@ -101,9 +101,9 @@ try {
             margin-right: 0.8rem;
         }
         .category-btn:hover, .category-btn.active {
-            background: #D4AF37;
-            color: #1a1a1a;
-            border-color: #D4AF37;
+            background: #A52A2A;
+            color: #ffffff;
+            border-color: #A52A2A;
         }
         .menu-section {
             display: none;
@@ -119,7 +119,7 @@ try {
         }
         .welcome-message h2 {
             font-family: 'Playfair Display', serif;
-            color: #D4AF37;
+            color: #A52A2A;
         }
         .menu-grid {
             display: grid;
@@ -128,7 +128,7 @@ try {
         }
         .menu-item {
             background-color: #1e1e1e;
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(165, 42, 42, 0.1);
             border-radius: 10px;
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -141,7 +141,7 @@ try {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(165, 42, 42, 0.2);
             padding-bottom: 0.8rem;
             margin-bottom: 0.8rem;
         }
@@ -154,7 +154,7 @@ try {
         .item-price {
             font-weight: 600;
             font-size: 1.3rem;
-            color: #D4AF37;
+            color: #A52A2A;
             white-space: nowrap;
             padding-left: 1rem;
         }
