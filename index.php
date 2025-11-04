@@ -61,7 +61,7 @@ try {
         }
         .navbar {
             background-color: rgba(26, 26, 26, 0.9) !important;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(165, 42, 42, 0.2);
         }
         .form-container {
             max-width: 450px;
@@ -70,39 +70,39 @@ try {
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(165, 42, 42, 0.3);
         }
         .form-container h2 {
-            color: #D4AF37;
+            color: #A52A2A;
             text-align: center;
             margin-bottom: 30px;
             font-family: 'Playfair Display', serif;
         }
         .form-control {
             background-color: rgba(0,0,0,0.3);
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            border: 1px solid rgba(165, 42, 42, 0.4);
             color: #f0f0f0;
         }
         .form-control:focus {
             background-color: rgba(0,0,0,0.5);
-            border-color: #D4AF37;
+            border-color: #A52A2A;
             color: #ffffff;
             box-shadow: none;
         }
         .btn-primary {
-            background-color: #D4AF37;
-            border-color: #D4AF37;
-            color: #1a1a1a;
+            background-color: #A52A2A;
+            border-color: #A52A2A;
+            color: #ffffff;
             font-weight: 600;
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
-            background-color: transparent;
-            border-color: #D4AF37;
-            color: #D4AF37;
+            background-color: #8B0000;
+            border-color: #8B0000;
+            color: #ffffff;
         }
         .form-check-label a {
-            color: #D4AF37;
+            color: #A52A2A;
             cursor: pointer;
             text-decoration: none;
         }
@@ -111,17 +111,17 @@ try {
         .modal-content {
             background-color: #1e1e1e;
             color: #f0f0f0;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(165, 42, 42, 0.3);
         }
         .modal-header {
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(165, 42, 42, 0.3);
         }
         .modal-header .close {
             color: #f0f0f0;
             text-shadow: none;
         }
         .modal-title {
-            color: #D4AF37;
+            color: #A52A2A;
             font-family: 'Playfair Display', serif;
         }
     </style>
@@ -177,10 +177,10 @@ try {
                 <p class="last-updated" style="color:#888; font-size:0.9rem;">Última atualização: <?php echo date('d/m/Y'); ?></p>
                 <p>Bem-vindo ao Bar da Tomazia. Ao utilizar os nossos serviços e registar-se no nosso sistema, você concorda com os seguintes termos e condições. Por favor, leia atentamente antes de prosseguir.</p>
 
-                <h6 style="color:#D4AF37;">1. Aceitação dos Termos</h6>
+                <h6 style="color:#A52A2A;">1. Aceitação dos Termos</h6>
                 <p>Ao aceder e utilizar este website e os serviços do Bar da Tomazia, você aceita estar vinculado a estes Termos e Condições, todas as leis e regulamentos aplicáveis. Se não concordar com algum destes termos, está proibido de usar ou aceder a este site.</p>
 
-                <h6 style="color:#D4AF37;">2. Recolha e Uso de Dados Pessoais</h6>
+                <h6 style="color:#A52A2A;">2. Recolha e Uso de Dados Pessoais</h6>
                 <p>Ao registar-se no nosso sistema, você concorda em fornecer informações pessoais verídicas, incluindo:</p>
                 <ul>
                     <li>Nome completo</li>
@@ -194,13 +194,13 @@ try {
                     <li>Melhorar a experiência do cliente</li>
                 </ul>
 
-                <h6 style="color:#D4AF37;">3. Proteção de Dados</h6>
+                <h6 style="color:#A52A2A;">3. Proteção de Dados</h6>
                 <p>O Bar da Tomazia compromete-se a proteger a sua privacidade e os seus dados pessoais de acordo com o Regulamento Geral de Proteção de Dados (RGPD). Os seus dados não serão partilhados com terceiros sem o seu consentimento explícito, exceto quando exigido por lei.</p>
 
-                <h6 style="color:#D4AF37;">4. Cookies e Tecnologias de Rastreamento</h6>
+                <h6 style="color:#A52A2A;">4. Cookies e Tecnologias de Rastreamento</h6>
                 <p>Este website utiliza cookies para melhorar a experiência do utilizador. Um cookie é um identificador único armazenado no seu dispositivo que nos permite reconhecê-lo em visitas futuras. Pode desativar os cookies nas configurações do seu navegador, mas algumas funcionalidades do site podem não funcionar corretamente.</p>
 
-                <h6 style="color:#D4AF37;">5. Responsabilidade do Utilizador</h6>
+                <h6 style="color:#A52A2A;">5. Responsabilidade do Utilizador</h6>
                 <p>Ao utilizar os nossos serviços, você concorda em:</p>
                 <ul>
                     <li>Fornecer informações verdadeiras e atualizadas</li>
@@ -209,19 +209,19 @@ try {
                     <li>Respeitar os direitos de propriedade intelectual do Bar da Tomazia</li>
                 </ul>
 
-                <h6 style="color:#D4AF37;">6. Limitação de Responsabilidade</h6>
+                <h6 style="color:#A52A2A;">6. Limitação de Responsabilidade</h6>
                 <p>O Bar da Tomazia não se responsabiliza por quaisquer danos diretos, indiretos, incidentais ou consequenciais resultantes do uso ou incapacidade de usar os nossos serviços.</p>
 
-                <h6 style="color:#D4AF37;">7. Modificações aos Termos</h6>
+                <h6 style="color:#A52A2A;">7. Modificações aos Termos</h6>
                 <p>Reservamo-nos o direito de modificar estes Termos e Condições a qualquer momento. As alterações entrarão em vigor imediatamente após a sua publicação no website. É da sua responsabilidade rever periodicamente estes termos.</p>
 
-                <h6 style="color:#D4AF37;">8. Lei Aplicável</h6>
+                <h6 style="color:#A52A2A;">8. Lei Aplicável</h6>
                 <p>Estes Termos e Condições são regidos pelas leis de Portugal. Qualquer disputa relacionada com estes termos será submetida à jurisdição exclusiva dos tribunais portugueses.</p>
 
-                <h6 style="color:#D4AF37;">9. Contacto</h6>
+                <h6 style="color:#A52A2A;">9. Contacto</h6>
                 <p>Para questões relacionadas com estes Termos e Condições ou com a proteção dos seus dados pessoais, por favor contacte-nos através do Bar da Tomazia.</p>
             </div>
-          <div class="modal-footer" style="border-top: 1px solid rgba(212, 175, 55, 0.3);">
+          <div class="modal-footer" style="border-top: 1px solid rgba(165, 42, 42, 0.3);">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
           </div>
         </div>

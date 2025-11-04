@@ -27,11 +27,11 @@
             background-color: rgba(26, 26, 26, 0.9);
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(165, 42, 42, 0.3);
         }
 
         .terms-container h1 {
-            color: #D4AF37;
+            color: #A52A2A;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-bottom: 30px;
@@ -39,7 +39,7 @@
         }
 
         .terms-container h2 {
-            color: #D4AF37;
+            color: #A52A2A;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-top: 30px;
@@ -63,9 +63,9 @@
         }
 
         .back-button {
-            background-color: #D4AF37;
-            color: #1a1a1a;
-            border: 2px solid #D4AF37;
+            background-color: #A52A2A;
+            color: #ffffff;
+            border: 2px solid #A52A2A;
             padding: 12px 30px;
             border-radius: 5px;
             font-weight: 600;
@@ -76,8 +76,8 @@
         }
 
         .back-button:hover {
-            background-color: transparent;
-            color: #D4AF37;
+            background-color: #8B0000;
+            color: #ffffff;
             text-decoration: none;
         }
 

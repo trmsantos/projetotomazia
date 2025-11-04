@@ -40,7 +40,7 @@
             text-align: center;
         }
         .error-container h1 {
-            color: #D4AF37;
+            color: #A52A2A;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-bottom: 18px;
@@ -51,9 +51,9 @@
             font-size: 1.2rem;
         }
         .btn-primary {
-            background-color: #D4AF37;
-            border-color: #D4AF37;
-            color: #1a1a1a;
+            background-color: #A52A2A;
+            border-color: #A52A2A;
+            color: #ffffff;
             font-weight: 600;
             font-size: 1.1rem;
             padding: 12px 28px;
@@ -61,8 +61,8 @@
             transition: all 0.3s;
         }
         .btn-primary:hover {
-            background-color: transparent;
-            color: #D4AF37;
+            background-color: #8B0000;
+            color: #ffffff;
         }
     </style>
 </head>

@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <style>
         body { background: #121212; color: #f0f0f0; font-family: Montserrat, Arial, sans-serif;}
         .form-container { max-width: 400px; margin: 80px auto; background: #232323; padding: 30px; border-radius: 8px;}
-        label { color: #D4AF37; }
-        .btn-primary { background: #D4AF37; border: none; color: #1a1a1a; font-weight: bold;}
+        label { color: #A52A2A; }
+        .btn-primary { background: #A52A2A; border: none; color: #ffffff; font-weight: bold;}
     </style>
 </head>
 <body>
