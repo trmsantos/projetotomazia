@@ -26,7 +26,7 @@
         }
         .navbar {
             background-color: rgba(26,26,26,0.92)!important;
-            border-bottom: 1px solid rgba(212,175,55,0.2);
+            border-bottom: 1px solid rgba(139,69,19,0.2);
         }
         .navbar-brand img { height: 80px; }
         .error-container {
@@ -36,11 +36,11 @@
             padding: 40px 32px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border: 1px solid rgba(212,175,55,0.3);
+            border: 1px solid rgba(139,69,19,0.3);
             text-align: center;
         }
         .error-container h1 {
-            color: #D4AF37;
+            color: #8B4513;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-bottom: 18px;
@@ -51,8 +51,8 @@
             font-size: 1.2rem;
         }
         .btn-primary {
-            background-color: #D4AF37;
-            border-color: #D4AF37;
+            background-color: #8B4513;
+            border-color: #8B4513;
             color: #1a1a1a;
             font-weight: 600;
             font-size: 1.1rem;
@@ -62,7 +62,7 @@
         }
         .btn-primary:hover {
             background-color: transparent;
-            color: #D4AF37;
+            color: #8B4513;
         }
     </style>
 </head>

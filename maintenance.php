@@ -22,7 +22,7 @@
         }
         .navbar {
             background-color: rgba(26,26,26,0.92)!important;
-            border-bottom: 1px solid rgba(212,175,55,0.2);
+            border-bottom: 1px solid rgba(139,69,19,0.2);
             z-index: 2;
         }
         .navbar-brand img { height: 80px; }
@@ -35,11 +35,11 @@
             padding: 40px 32px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border: 1px solid rgba(212,175,55,0.3);
+            border: 1px solid rgba(139,69,19,0.3);
             text-align: center;
         }
         .maintenance-container h1 {
-            color: #D4AF37;
+            color: #8B4513;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-bottom: 18px;
@@ -67,7 +67,7 @@
             <h1>Em Manutenção</h1>
             <p>O Bar da Tomazia está temporariamente em manutenção.<br>
                Por favor, volte mais tarde.<br>
-               <small style="color:#D4AF37;">Estamos a preparar novidades para si!</small></p>
+               <small style="color:#8B4513;">Estamos a preparar novidades para si!</small></p>
         </div>
     </div>
     <script>
@@ -83,10 +83,10 @@
 
         // Gear data
         const gears = [
-            {x: 180, y: 260, r: 55, teeth: 12, speed: 0.012, color: "#D4AF37", angle: 0},
+            {x: 180, y: 260, r: 55, teeth: 12, speed: 0.012, color: "#8B4513", angle: 0},
             {x: 270, y: 340, r: 32, teeth: 8, speed: -0.02, color: "#a0a0a0", angle: 0},
             {x: 380, y: 220, r: 38, teeth: 10, speed: 0.017, color: "#f0f0f0", angle: 0},
-            {x: 600, y: 420, r: 60, teeth: 14, speed: -0.015, color: "#D4AF37", angle: 0},
+            {x: 600, y: 420, r: 60, teeth: 14, speed: -0.015, color: "#8B4513", angle: 0},
             {x: 700, y: 200, r: 42, teeth: 8, speed: 0.021, color: "#a0a0a0", angle: 0}
         ];
         function drawGear(g) {

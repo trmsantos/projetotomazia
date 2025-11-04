@@ -27,11 +27,11 @@
             background-color: rgba(26, 26, 26, 0.9);
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(139, 69, 19, 0.3);
         }
 
         .terms-container h1 {
-            color: #D4AF37;
+            color: #8B4513;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-bottom: 30px;
@@ -39,7 +39,7 @@
         }
 
         .terms-container h2 {
-            color: #D4AF37;
+            color: #8B4513;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             margin-top: 30px;
@@ -63,9 +63,9 @@
         }
 
         .back-button {
-            background-color: #D4AF37;
+            background-color: #8B4513;
             color: #1a1a1a;
-            border: 2px solid #D4AF37;
+            border: 2px solid #8B4513;
             padding: 12px 30px;
             border-radius: 5px;
             font-weight: 600;
@@ -77,7 +77,7 @@
 
         .back-button:hover {
             background-color: transparent;
-            color: #D4AF37;
+            color: #8B4513;
             text-decoration: none;
         }
 
