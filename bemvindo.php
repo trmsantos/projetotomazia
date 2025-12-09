@@ -126,7 +126,7 @@ $nome = $_SESSION['nome'];
         }
         
         .wifi-section { background-color: #5D1F3A; }
-        .events-section { background-color: #4A1830; }
+        .events-section { background-color: var(--secondary-burgundy); }
         .map-section { background-color: #5D1F3A; }
 
         .wifi-card, .event-card {
