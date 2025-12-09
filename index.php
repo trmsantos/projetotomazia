@@ -37,7 +37,7 @@ try {
         body {
             position: relative;
             min-height: 100vh;
-            background-color: #1a1a1a;
+            background-color: #5D1F3A;
             color: #f0f0f0;
             font-family: 'Montserrat', sans-serif;
         }
@@ -56,17 +56,17 @@ try {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(93, 31, 58, 0.8);
             z-index: -1;
         }
         .navbar {
-            background-color: rgba(26, 26, 26, 0.9) !important;
+            background-color: rgba(93, 31, 58, 0.95) !important;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
         .form-container {
             max-width: 450px;
             margin: 5% auto;
-            background-color: rgba(26, 26, 26, 0.95);
+            background-color: rgba(61, 15, 36, 0.95);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -79,12 +79,12 @@ try {
             font-family: 'Playfair Display', serif;
         }
         .form-control {
-            background-color: rgba(0,0,0,0.3);
+            background-color: rgba(93,31,58,0.3);
             border: 1px solid rgba(212, 175, 55, 0.4);
             color: #f0f0f0;
         }
         .form-control:focus {
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(93,31,58,0.5);
             border-color: #D4AF37;
             color: #ffffff;
             box-shadow: none;
@@ -92,7 +92,7 @@ try {
         .btn-primary {
             background-color: #D4AF37;
             border-color: #D4AF37;
-            color: #1a1a1a;
+            color: #3D0F24;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -109,7 +109,7 @@ try {
         .form-check-label a:hover { text-decoration: underline; }
         
         .modal-content {
-            background-color: #1e1e1e;
+            background-color: #3D0F24;
             color: #f0f0f0;
             border: 1px solid rgba(212, 175, 55, 0.3);
         }

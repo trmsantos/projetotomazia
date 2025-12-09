@@ -132,12 +132,12 @@ if (isset($_GET['edit_event'])) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --background-dark: #1a1a1a;
-            --surface-dark: #232323;
+            --background-dark: #5D1F3A;
+            --surface-dark: #3D0F24;
             --primary-gold: #D4AF37;
             --text-light: #f0f0f0;
             --text-medium: #a0a0a0;
-            --border-color: #333;
+            --border-color: rgba(212, 175, 55, 0.2);
         }
         body { background: var(--background-dark); color: var(--text-light); font-family: 'Montserrat', Arial, sans-serif; }
         .navbar { background: var(--surface-dark); }
@@ -146,18 +146,18 @@ if (isset($_GET['edit_event'])) {
         .tab-content { background: var(--surface-dark); border-radius: 12px; padding: 30px; box-shadow: 0 8px 32px #00000060; border: 1px solid var(--border-color);}
         .nav-tabs { border-bottom: none; margin-bottom: 0;}
         .nav-tabs .nav-link { color: var(--primary-gold); font-weight: 600; border-radius: 8px 8px 0 0; margin-right: 10px; background: none; border: none; }
-        .nav-tabs .nav-link.active { background: var(--primary-gold); color: var(--background-dark);}
+        .nav-tabs .nav-link.active { background: var(--primary-gold); color: var(--surface-dark);}
         .section-title { font-family: 'Playfair Display', serif; color: var(--primary-gold); font-size: 2rem; margin-bottom: 1.2rem;}
         .form-section { margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;}
-        .form-control, .custom-select { background: var(--background-dark); color: var(--text-light); border: 1px solid var(--border-color);}
+        .form-control, .custom-select { background: rgba(93, 31, 58, 0.3); color: var(--text-light); border: 1px solid var(--border-color);}
         .form-control:focus, .custom-select:focus { border-color: var(--primary-gold); box-shadow: none; }
-        .btn-primary { background: var(--primary-gold); border-color: var(--primary-gold); color: var(--background-dark); font-weight: 600;}
+        .btn-primary { background: var(--primary-gold); border-color: var(--primary-gold); color: var(--surface-dark); font-weight: 600;}
         .btn-primary:hover { background: #c8a030; border-color: #c8a030;}
         .btn-outline-danger, .btn-outline-warning { border-radius: 4px; font-weight: 500;}
         .table { color: var(--text-light);}
         .table th { color: var(--primary-gold); border-top: none; }
         .table td, .table th { border-color: var(--border-color);}
-        .table-hover tbody tr:hover { background: #2a2a2a; }
+        .table-hover tbody tr:hover { background: rgba(212, 175, 55, 0.1); }
         .logout-form { text-align: right; margin-top: 20px;}
         .chart-container { min-height:320px; }
         @media (max-width: 1000px) {

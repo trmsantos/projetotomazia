@@ -23,7 +23,7 @@ $nome = $_SESSION['nome'];
         body {
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            background-color: #1a1a1a;
+            background-color: #5D1F3A;
             color: #f0f0f0;
         }
 
@@ -55,7 +55,7 @@ $nome = $_SESSION['nome'];
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(93, 31, 58, 0.7);
             z-index: -1;
         }
         
@@ -64,7 +64,7 @@ $nome = $_SESSION['nome'];
             top: 20px;
             right: 20px;
             z-index: 1000;
-            background: rgba(26, 26, 26, 0.9);
+            background: rgba(61, 15, 36, 0.95);
             padding: 15px;
             border-radius: 10px;
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -84,7 +84,7 @@ $nome = $_SESSION['nome'];
 
         .nav-menu a:hover {
             background: #D4AF37;
-            color: #1a1a1a;
+            color: #3D0F24;
         }
         
         .hero-content h1 {
@@ -102,7 +102,7 @@ $nome = $_SESSION['nome'];
 
         .btn-custom {
             background-color: #D4AF37;
-            color: #1a1a1a;
+            color: #3D0F24;
             border: 2px solid #D4AF37;
             padding: 15px 30px;
             font-size: 1.2rem;
@@ -125,12 +125,12 @@ $nome = $_SESSION['nome'];
             color: #D4AF37;
         }
         
-        .wifi-section { background-color: #1a1a1a; }
-        .events-section { background-color: #1e1e1e; }
-        .map-section { background-color: #1a1a1a; }
+        .wifi-section { background-color: #5D1F3A; }
+        .events-section { background-color: var(--secondary-burgundy); }
+        .map-section { background-color: #5D1F3A; }
 
         .wifi-card, .event-card {
-            background: #1e1e1e;
+            background: #3D0F24;
             color: #f0f0f0;
             border: 1px solid rgba(212, 175, 55, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -143,7 +143,7 @@ $nome = $_SESSION['nome'];
         .btn-copy-icon {
             background: none;
             border: none;
-            color: #1a1a1a;
+            color: #3D0F24;
             cursor: pointer;
             padding: 5px;
             opacity: 0.8;
@@ -194,7 +194,7 @@ $nome = $_SESSION['nome'];
                 transform: translateX(100%);
                 transition: transform 0.3s ease-in-out;
                 border-radius: 0;
-                background: rgba(26, 26, 26, 0.98);
+                background: rgba(61, 15, 36, 0.98);
                 backdrop-filter: blur(5px);
             }
             .nav-menu.open { transform: translateX(0); }
@@ -247,7 +247,7 @@ $nome = $_SESSION['nome'];
         </div>
     </section>
 
-    <section id="menu" class="menu-section" style="background-color: #1e1e1e;">
+    <section id="menu" class="menu-section" style="background-color: #4A1830;">
         <div class="container">
             <h2>Nosso Cardápio</h2>
             <div class="text-center">
