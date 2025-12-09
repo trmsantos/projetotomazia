@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #1a1a1a;
+            background-color: #5D1F3A;
             color: #f0f0f0;
             font-family: 'Montserrat', Arial, sans-serif;
             min-height: 100vh;
@@ -18,10 +18,10 @@
         .video-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.7); z-index: 1;
+            background: rgba(93,31,58,0.8); z-index: 1;
         }
         .navbar {
-            background-color: rgba(26,26,26,0.92)!important;
+            background-color: rgba(93,31,58,0.95)!important;
             border-bottom: 1px solid rgba(212,175,55,0.2);
             z-index: 2;
         }
@@ -31,7 +31,7 @@
             z-index: 2;
             max-width: 500px;
             margin: 120px auto 0 auto;
-            background: rgba(26,26,26,0.95);
+            background: rgba(61,15,36,0.95);
             padding: 40px 32px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
