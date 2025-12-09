@@ -3,16 +3,17 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
 
-/* Color Palette - Modern Dark Theme */
+/* Color Palette - Tomazia Brand Theme */
 :root {
-    --primary-color: #1a1a1a;
-    --primary-dark: #0d0d0d;
+    --primary-color: #5D1F3A;
+    --primary-dark: #3D0F24;
     --secondary-color: #D4AF37;
+    --accent-cream: #F5E6D3;
     --text-dark: #f0f0f0;
     --text-light: #cccccc;
-    --bg-light: #1a1a1a;
+    --bg-light: #5D1F3A;
     --white: #ffffff;
-    --overlay-dark: rgba(0, 0, 0, 0.7);
+    --overlay-dark: rgba(93, 31, 58, 0.85);
 }
 
 * {
@@ -110,7 +111,7 @@ a:hover {
 
 /* Navbar */
 .navbar {
-    background-color: rgba(26, 26, 26, 0.95) !important;
+    background-color: rgba(93, 31, 58, 0.95) !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     padding: 15px 0;
 }
@@ -149,7 +150,7 @@ a:hover {
 .card {
     border: 1px solid rgba(212, 175, 55, 0.2);
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(93, 31, 58, 0.3);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
@@ -239,14 +240,14 @@ section {
     border: 2px solid rgba(212, 175, 55, 0.3);
     padding: 12px;
     transition: border-color 0.3s;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(93, 31, 58, 0.2);
     color: var(--text-dark);
 }
 
 .form-control:focus {
     border-color: var(--secondary-color);
     box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(93, 31, 58, 0.3);
     color: var(--white);
 }
 
@@ -266,7 +267,7 @@ section {
 }
 
 .form-check-input {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(93, 31, 58, 0.3);
     border: 2px solid var(--secondary-color);
 }
 
@@ -277,7 +278,7 @@ section {
 
 /* Tables */
 .table {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(93, 31, 58, 0.2);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -340,7 +341,7 @@ footer a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75); /* Darker overlay for better text readability */
+    background: rgba(93, 31, 58, 0.75); /* Darker overlay for better text readability */
     z-index: -1;
 }
 
