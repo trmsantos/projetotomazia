@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Criar Admin</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background: #121212; color: #f0f0f0; font-family: Montserrat, Arial, sans-serif;}
-        .form-container { max-width: 400px; margin: 80px auto; background: #232323; padding: 30px; border-radius: 8px;}
+        body { background: #6B1C3E; color: #f0f0f0; font-family: Montserrat, Arial, sans-serif;}
+        .form-container { max-width: 400px; margin: 80px auto; background: #4A1429; padding: 30px; border-radius: 8px;}
         label { color: #D4AF37; }
-        .btn-primary { background: #D4AF37; border: none; color: #1a1a1a; font-weight: bold;}
+        .btn-primary { background: #D4AF37; border: none; color: #6B1C3E; font-weight: bold;}
     </style>
 </head>
 <body>

@@ -12,19 +12,19 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         body {
-            background-color: #1a1a1a;
+            background-color: #6B1C3E;
             color: #f0f0f0;
         }
 
         .navbar {
-            background-color: rgba(26, 26, 26, 0.95) !important;
+            background-color: rgba(107, 28, 62, 0.95) !important;
         }
 
         .terms-container {
             max-width: 900px;
             margin: 50px auto;
             padding: 40px;
-            background-color: rgba(26, 26, 26, 0.9);
+            background-color: rgba(107, 28, 62, 0.9);
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(212, 175, 55, 0.3);

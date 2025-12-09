@@ -3,16 +3,16 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
 
-/* Color Palette - Modern Dark Theme */
+/* Color Palette - Modern Dark Theme with Logo Burgundy */
 :root {
-    --primary-color: #1a1a1a;
-    --primary-dark: #0d0d0d;
+    --primary-color: #6B1C3E;
+    --primary-dark: #4A1429;
     --secondary-color: #D4AF37;
     --text-dark: #f0f0f0;
     --text-light: #cccccc;
-    --bg-light: #1a1a1a;
+    --bg-light: #6B1C3E;
     --white: #ffffff;
-    --overlay-dark: rgba(0, 0, 0, 0.7);
+    --overlay-dark: rgba(107, 28, 62, 0.7);
 }
 
 * {
@@ -110,7 +110,7 @@ a:hover {
 
 /* Navbar */
 .navbar {
-    background-color: rgba(26, 26, 26, 0.95) !important;
+    background-color: rgba(107, 28, 62, 0.95) !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     padding: 15px 0;
 }
@@ -340,7 +340,7 @@ footer a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75); /* Darker overlay for better text readability */
+    background: rgba(107, 28, 62, 0.75); /* Darker overlay for better text readability */
     z-index: -1;
 }
 

@@ -43,12 +43,12 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #1a1a1a;
+            background-color: #6B1C3E;
             color: #f0f0f0;
             font-family: 'Montserrat', sans-serif;
         }
         .header-cardapio {
-            background-color: #1e1e1e;
+            background-color: #4A1429;
             padding: 2rem 1rem;
             text-align: center;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
@@ -71,7 +71,7 @@ try {
             color: #fff;
         }
         .category-nav-wrapper {
-            background-color: #1a1a1a;
+            background-color: #6B1C3E;
             padding: 1rem 0;
             position: sticky;
             top: 0;
@@ -102,7 +102,7 @@ try {
         }
         .category-btn:hover, .category-btn.active {
             background: #D4AF37;
-            color: #1a1a1a;
+            color: #6B1C3E;
             border-color: #D4AF37;
         }
         .menu-section {
@@ -127,7 +127,7 @@ try {
             gap: 1.5rem;
         }
         .menu-item {
-            background-color: #1e1e1e;
+            background-color: #4A1429;
             border: 1px solid rgba(212, 175, 55, 0.1);
             border-radius: 10px;
             padding: 1.5rem;

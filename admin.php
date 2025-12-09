@@ -132,12 +132,12 @@ if (isset($_GET['edit_event'])) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --background-dark: #1a1a1a;
-            --surface-dark: #232323;
+            --background-dark: #6B1C3E;
+            --surface-dark: #4A1429;
             --primary-gold: #D4AF37;
             --text-light: #f0f0f0;
             --text-medium: #a0a0a0;
-            --border-color: #333;
+            --border-color: #8B2D52;
         }
         body { background: var(--background-dark); color: var(--text-light); font-family: 'Montserrat', Arial, sans-serif; }
         .navbar { background: var(--surface-dark); }
@@ -157,7 +157,7 @@ if (isset($_GET['edit_event'])) {
         .table { color: var(--text-light);}
         .table th { color: var(--primary-gold); border-top: none; }
         .table td, .table th { border-color: var(--border-color);}
-        .table-hover tbody tr:hover { background: #2a2a2a; }
+        .table-hover tbody tr:hover { background: #8B2D52; }
         .logout-form { text-align: right; margin-top: 20px;}
         .chart-container { min-height:320px; }
         @media (max-width: 1000px) {

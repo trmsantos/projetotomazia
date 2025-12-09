@@ -37,7 +37,7 @@ try {
         body {
             position: relative;
             min-height: 100vh;
-            background-color: #1a1a1a;
+            background-color: #6B1C3E;
             color: #f0f0f0;
             font-family: 'Montserrat', sans-serif;
         }
@@ -56,17 +56,17 @@ try {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(107, 28, 62, 0.7);
             z-index: -1;
         }
         .navbar {
-            background-color: rgba(26, 26, 26, 0.9) !important;
+            background-color: rgba(107, 28, 62, 0.9) !important;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
         .form-container {
             max-width: 450px;
             margin: 5% auto;
-            background-color: rgba(26, 26, 26, 0.95);
+            background-color: rgba(107, 28, 62, 0.95);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -92,7 +92,7 @@ try {
         .btn-primary {
             background-color: #D4AF37;
             border-color: #D4AF37;
-            color: #1a1a1a;
+            color: #6B1C3E;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -109,7 +109,7 @@ try {
         .form-check-label a:hover { text-decoration: underline; }
         
         .modal-content {
-            background-color: #1e1e1e;
+            background-color: #4A1429;
             color: #f0f0f0;
             border: 1px solid rgba(212, 175, 55, 0.3);
         }

@@ -23,7 +23,7 @@ $nome = $_SESSION['nome'];
         body {
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            background-color: #1a1a1a;
+            background-color: #6B1C3E;
             color: #f0f0f0;
         }
 
@@ -55,7 +55,7 @@ $nome = $_SESSION['nome'];
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(107, 28, 62, 0.6);
             z-index: -1;
         }
         
@@ -64,7 +64,7 @@ $nome = $_SESSION['nome'];
             top: 20px;
             right: 20px;
             z-index: 1000;
-            background: rgba(26, 26, 26, 0.9);
+            background: rgba(107, 28, 62, 0.9);
             padding: 15px;
             border-radius: 10px;
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -84,7 +84,7 @@ $nome = $_SESSION['nome'];
 
         .nav-menu a:hover {
             background: #D4AF37;
-            color: #1a1a1a;
+            color: #6B1C3E;
         }
         
         .hero-content h1 {
@@ -102,7 +102,7 @@ $nome = $_SESSION['nome'];
 
         .btn-custom {
             background-color: #D4AF37;
-            color: #1a1a1a;
+            color: #6B1C3E;
             border: 2px solid #D4AF37;
             padding: 15px 30px;
             font-size: 1.2rem;
@@ -125,12 +125,12 @@ $nome = $_SESSION['nome'];
             color: #D4AF37;
         }
         
-        .wifi-section { background-color: #1a1a1a; }
-        .events-section { background-color: #1e1e1e; }
-        .map-section { background-color: #1a1a1a; }
+        .wifi-section { background-color: #6B1C3E; }
+        .events-section { background-color: #4A1429; }
+        .map-section { background-color: #6B1C3E; }
 
         .wifi-card, .event-card {
-            background: #1e1e1e;
+            background: #4A1429;
             color: #f0f0f0;
             border: 1px solid rgba(212, 175, 55, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -143,7 +143,7 @@ $nome = $_SESSION['nome'];
         .btn-copy-icon {
             background: none;
             border: none;
-            color: #1a1a1a;
+            color: #6B1C3E;
             cursor: pointer;
             padding: 5px;
             opacity: 0.8;
@@ -194,7 +194,7 @@ $nome = $_SESSION['nome'];
                 transform: translateX(100%);
                 transition: transform 0.3s ease-in-out;
                 border-radius: 0;
-                background: rgba(26, 26, 26, 0.98);
+                background: rgba(107, 28, 62, 0.98);
                 backdrop-filter: blur(5px);
             }
             .nav-menu.open { transform: translateX(0); }
@@ -234,8 +234,8 @@ $nome = $_SESSION['nome'];
                 <p>Clique na imagem para mostrar os dados WI-FI:</p>
                 <img src="img/wifi.png" alt="WiFi" onclick="toggleWiFi()" style="width: 150px; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="wifi-info" id="wifiInfo" style="display: none; margin-top: 20px;">
-                    <p style="text-align: left; background-color: #D4AF37; color: #1a1a1a; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
-                    <div style="display: flex; align-items: center; justify-content: space-between; background-color: #D4AF37; color: #1a1a1a; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
+                    <p style="text-align: left; background-color: #D4AF37; color: #6B1C3E; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; background-color: #D4AF37; color: #6B1C3E; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
                         <span><strong>Password:</strong> <span id="wifiPassword"><?php echo htmlspecialchars(WIFI_PASSWORD); ?></span></span>
                         <button onclick="copyWifiPassword()" class="btn-copy-icon" aria-label="Copiar password">
                             <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg>
@@ -247,7 +247,7 @@ $nome = $_SESSION['nome'];
         </div>
     </section>
 
-    <section id="menu" class="menu-section" style="background-color: #1e1e1e;">
+    <section id="menu" class="menu-section" style="background-color: #4A1429;">
         <div class="container">
             <h2>Nosso Cardápio</h2>
             <div class="text-center">
