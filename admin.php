@@ -122,11 +122,29 @@ try {
             }
         }
         
-        // NOTA: Aqui seria integrada a API de SMS
-        // Por enquanto, apenas simulamos o envio
-        $_SESSION['sms_success'] = "SMS preparado para envio a " . count($telefones) . " número(s). Integração com API de SMS pendente.";
-        $_SESSION['sms_phones'] = $telefones;
-        $_SESSION['sms_message'] = $mensagem;
+        // Verificar se há números para enviar
+        if (empty($telefones)) {
+            $_SESSION['sms_error'] = "Nenhum número de telefone encontrado para envio.";
+            header('Location: admin.php#sms');
+            exit;
+        }
+        
+        // Enviar SMS via API
+        $sendResult = sendSmsViaApi($telefones, $mensagem);
+        
+        if ($sendResult['success']) {
+            $message = "SMS enviado com sucesso para " . $sendResult['sent_count'] . " número(s)";
+            if ($sendResult['failed_count'] > 0) {
+                $message .= " (" . $sendResult['failed_count'] . " falhou)";
+            }
+            if (isset($sendResult['simulation']) && $sendResult['simulation']) {
+                $message .= " [Modo de simulação - API não configurada]";
+            }
+            $_SESSION['sms_success'] = $message;
+            $_SESSION['sms_phones'] = array_slice($telefones, 0, 10); // Mostrar apenas os primeiros 10
+        } else {
+            $_SESSION['sms_error'] = "Erro ao enviar SMS. " . implode('; ', $sendResult['errors']);
+        }
         
         header('Location: admin.php#sms');
         exit;
@@ -415,9 +433,9 @@ if (isset($_GET['edit_event'])) {
                     <?php unset($_SESSION['sms_error']); ?>
                 <?php endif; ?>
                 
-                <p class="text-warning mb-3">
-                    <strong>Nota:</strong> Esta funcionalidade está preparada para integração com uma API de SMS. 
-                    Atualmente, simula o envio para fins de teste.
+                <p class="text-info mb-3">
+                    <strong>Nota:</strong> Configure as credenciais da API de SMS no arquivo config.php para enviar SMS reais. 
+                    Atualmente, o sistema opera em modo de simulação.
                 </p>
                 
                 <form method="POST" action="admin.php#sms" id="smsForm">

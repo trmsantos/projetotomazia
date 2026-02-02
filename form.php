@@ -57,13 +57,29 @@ try {
         $telefone = htmlspecialchars($telefone);
         $data_registro = date('Y-m-d H:i:s');
 
-        $query = $db->prepare('SELECT COUNT(*) as count FROM tomazia_clientes WHERE user_id = :user_id');
-        $query->bindValue(':user_id', $userId, SQLITE3_TEXT);
+        // Verificar se já existe registro com este email ou telefone
+        $query = $db->prepare('SELECT id, user_id FROM tomazia_clientes WHERE email = :email OR telemovel = :telefone LIMIT 1');
+        $query->bindValue(':email', $email, SQLITE3_TEXT);
+        $query->bindValue(':telefone', $telefone, SQLITE3_TEXT);
         $result = $query->execute()->fetchArray(SQLITE3_ASSOC);
 
-        if ($result['count'] > 0) {
-            echo "Dados já foram introduzidos para este dispositivo!";
+        if ($result) {
+            // Registro duplicado encontrado - atualizar dados existentes
+            $query = $db->prepare('UPDATE tomazia_clientes SET user_id = :user_id, nome = :nome, email = :email, telemovel = :telefone, data_registro = :data_registro WHERE id = :id');
+            $query->bindValue(':id', $result['id'], SQLITE3_INTEGER);
+            $query->bindValue(':user_id', $userId, SQLITE3_TEXT);
+            $query->bindValue(':nome', $nome, SQLITE3_TEXT);
+            $query->bindValue(':email', $email, SQLITE3_TEXT);
+            $query->bindValue(':telefone', $telefone, SQLITE3_TEXT);
+            $query->bindValue(':data_registro', $data_registro, SQLITE3_TEXT);
+            $query->execute();
+            
+            $_SESSION['nome'] = $nome;
+            $_SESSION['updated'] = true; // Indicar que foi atualização
+            header("location: bemvindo.php");
+            exit;
         } else {
+            // Inserir novo registro
             $query = $db->prepare('INSERT INTO tomazia_clientes (user_id, nome, email, telemovel, data_registro) VALUES (:user_id, :nome, :email, :telefone, :data_registro)');
             $query->bindValue(':user_id', $userId, SQLITE3_TEXT);
             $query->bindValue(':nome', $nome, SQLITE3_TEXT);
@@ -72,8 +88,8 @@ try {
             $query->bindValue(':data_registro', $data_registro, SQLITE3_TEXT);
             $query->execute();
 
-            $_SESSION['nome'] = $nome; // Armazena o nome na sessão
-            header("location: bemvindo.php"); // Redireciona para a página de boas-vindas
+            $_SESSION['nome'] = $nome;
+            header("location: bemvindo.php");
             exit;
         }
     }
