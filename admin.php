@@ -184,12 +184,14 @@ try {
             
             // Mover arquivo para diretório de uploads
             if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminhoDestino)) {
-                // Salvar no banco de dados
-                $stmt = $db->prepare('INSERT INTO fotos (nome_foto, caminho, descricao, visivel) VALUES (:nome_foto, :caminho, :descricao, :visivel)');
+                // Salvar no banco de dados - admin uploads são aprovados automaticamente
+                $stmt = $db->prepare('INSERT INTO fotos (nome_foto, caminho, descricao, visivel, status, uploaded_by, is_admin_upload) VALUES (:nome_foto, :caminho, :descricao, :visivel, :status, :uploaded_by, 1)');
                 $stmt->bindValue(':nome_foto', $_FILES['foto']['name'], SQLITE3_TEXT);
                 $stmt->bindValue(':caminho', $caminhoRelativo, SQLITE3_TEXT);
                 $stmt->bindValue(':descricao', $descricao, SQLITE3_TEXT);
                 $stmt->bindValue(':visivel', $visivel, SQLITE3_INTEGER);
+                $stmt->bindValue(':status', 'aprovado', SQLITE3_TEXT);
+                $stmt->bindValue(':uploaded_by', 'Admin', SQLITE3_TEXT);
                 $stmt->execute();
                 
                 $_SESSION['photo_success'] = "Foto enviada com sucesso!";
@@ -200,6 +202,32 @@ try {
             $_SESSION['photo_error'] = "Nenhuma foto foi selecionada ou ocorreu um erro no upload.";
         }
         
+        header('Location: admin.php#fotos');
+        exit;
+    }
+    
+    if (isset($_POST['approve_photo'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        
+        $id_foto = $_POST['id_foto'];
+        $stmt = $db->prepare("UPDATE fotos SET status = 'aprovado', visivel = 1 WHERE id = :id");
+        $stmt->bindValue(':id', $id_foto, SQLITE3_INTEGER);
+        $stmt->execute();
+        
+        $_SESSION['photo_success'] = "Foto aprovada com sucesso!";
+        header('Location: admin.php#fotos');
+        exit;
+    }
+    
+    if (isset($_POST['reject_photo'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        
+        $id_foto = $_POST['id_foto'];
+        $stmt = $db->prepare("UPDATE fotos SET status = 'rejeitado', visivel = 0 WHERE id = :id");
+        $stmt->bindValue(':id', $id_foto, SQLITE3_INTEGER);
+        $stmt->execute();
+        
+        $_SESSION['photo_success'] = "Foto rejeitada.";
         header('Location: admin.php#fotos');
         exit;
     }
@@ -649,13 +677,107 @@ if (isset($_GET['edit_event'])) {
             </div>
             
             <div>
-                <div class="section-title">Galeria de Fotos</div>
+                <div class="section-title">Moderação de Fotos</div>
+                
+                <!-- Filter -->
+                <div class="mb-3">
+                    <form method="GET" action="admin.php#fotos" class="form-inline">
+                        <label for="filter_status" class="mr-2">Filtro:</label>
+                        <select name="filter_status" id="filter_status" class="form-control form-control-sm mr-2" onchange="this.form.submit()">
+                            <option value="todas" <?php echo (!isset($_GET['filter_status']) || $_GET['filter_status'] === 'todas') ? 'selected' : ''; ?>>Todas</option>
+                            <option value="aprovado" <?php echo (isset($_GET['filter_status']) && $_GET['filter_status'] === 'aprovado') ? 'selected' : ''; ?>>Aprovadas</option>
+                            <option value="pendente" <?php echo (isset($_GET['filter_status']) && $_GET['filter_status'] === 'pendente') ? 'selected' : ''; ?>>Pendentes</option>
+                            <option value="rejeitado" <?php echo (isset($_GET['filter_status']) && $_GET['filter_status'] === 'rejeitado') ? 'selected' : ''; ?>>Rejeitadas</option>
+                        </select>
+                        <?php
+                        // Count pending photos
+                        $pendingResult = $db->query("SELECT COUNT(*) as count FROM fotos WHERE status = 'pendente'");
+                        $pendingCount = $pendingResult->fetchArray(SQLITE3_ASSOC)['count'];
+                        if ($pendingCount > 0):
+                        ?>
+                        <span class="badge badge-warning ml-2">Pendentes: <?php echo $pendingCount; ?></span>
+                        <?php endif; ?>
+                    </form>
+                </div>
+                
+                <!-- Pending Photos Section -->
+                <?php
+                $pendingPhotos = $db->query("SELECT * FROM fotos WHERE status = 'pendente' ORDER BY data_upload DESC");
+                $hasPending = false;
+                $pendingList = [];
+                while ($row = $pendingPhotos->fetchArray(SQLITE3_ASSOC)) {
+                    $pendingList[] = $row;
+                    $hasPending = true;
+                }
+                
+                if ($hasPending && (!isset($_GET['filter_status']) || $_GET['filter_status'] === 'todas' || $_GET['filter_status'] === 'pendente')):
+                ?>
+                <div class="alert alert-info">
+                    <h5>📋 Fotos Pendentes de Aprovação</h5>
+                </div>
+                <div class="row mb-4">
+                    <?php foreach ($pendingList as $row): ?>
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card" style="background: var(--surface-dark); border: 2px solid #ffc107;">
+                            <img src="<?php echo htmlspecialchars($row['caminho']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['nome_foto']); ?>" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h6 class="card-title" style="color: var(--primary-gold); font-size: 0.9rem;"><?php echo htmlspecialchars($row['nome_foto']); ?></h6>
+                                <?php if (!empty($row['descricao'])): ?>
+                                    <p class="card-text" style="color: var(--text-light); font-size: 0.85rem;"><?php echo htmlspecialchars($row['descricao']); ?></p>
+                                <?php endif; ?>
+                                <p class="card-text" style="font-size: 0.8rem; color: var(--text-medium);">
+                                    <strong>Por:</strong> <?php echo htmlspecialchars($row['uploaded_by'] ?? 'Desconhecido'); ?><br>
+                                    <strong>Data:</strong> 
+                                    <?php 
+                                    if (!empty($row['data_upload'])) {
+                                        $data = DateTime::createFromFormat('Y-m-d H:i:s', $row['data_upload']);
+                                        echo $data ? $data->format('d/m/Y H:i') : '—';
+                                    } else {
+                                        echo '—';
+                                    }
+                                    ?>
+                                </p>
+                                <div class="btn-group btn-group-sm d-flex" role="group">
+                                    <form method="POST" style="flex: 1; display:inline;" action="admin.php#fotos">
+                                        <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                                        <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="approve_photo" class="btn btn-sm btn-success btn-block">✓ Aprovar</button>
+                                    </form>
+                                    <form method="POST" style="flex: 1; display:inline;" action="admin.php#fotos" onsubmit="return confirm('Rejeitar esta foto?');">
+                                        <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                                        <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="reject_photo" class="btn btn-sm btn-danger btn-block">✗ Rejeitar</button>
+                                    </form>
+                                </div>
+                                <span class="badge badge-warning mt-2 d-block">⏳ Pendente</span>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+                
+                <!-- All Photos Gallery -->
+                <div class="section-title mt-4">Galeria de Fotos</div>
                 <div class="row">
                     <?php
-                    $result = $db->query('SELECT * FROM fotos ORDER BY data_upload DESC');
+                    // Build query based on filter using prepared statements
+                    $filter = $_GET['filter_status'] ?? 'todas';
+                    if ($filter === 'todas') {
+                        $result = $db->query("SELECT * FROM fotos ORDER BY data_upload DESC");
+                    } else {
+                        $stmt = $db->prepare("SELECT * FROM fotos WHERE status = :status ORDER BY data_upload DESC");
+                        $stmt->bindValue(':status', $filter, SQLITE3_TEXT);
+                        $result = $stmt->execute();
+                    }
+                    
                     $count = 0;
                     while ($row = $result->fetchArray(SQLITE3_ASSOC)):
                         $count++;
+                        // Skip pending photos if already shown above
+                        if ($row['status'] === 'pendente' && $hasPending && ($filter === 'todas' || $filter === 'pendente')) {
+                            continue;
+                        }
                     ?>
                     <div class="col-md-4 col-lg-3 mb-4">
                         <div class="card" style="background: var(--surface-dark); border: 1px solid var(--border-color);">
@@ -666,6 +788,7 @@ if (isset($_GET['edit_event'])) {
                                     <p class="card-text" style="color: var(--text-light); font-size: 0.85rem;"><?php echo htmlspecialchars($row['descricao']); ?></p>
                                 <?php endif; ?>
                                 <p class="card-text" style="font-size: 0.8rem; color: var(--text-medium);">
+                                    <strong>Por:</strong> <?php echo htmlspecialchars($row['uploaded_by'] ?? 'Admin'); ?><br>
                                     <?php 
                                     if (!empty($row['data_upload'])) {
                                         $data = DateTime::createFromFormat('Y-m-d H:i:s', $row['data_upload']);
@@ -689,9 +812,27 @@ if (isset($_GET['edit_event'])) {
                                         <button type="submit" name="delete_photo" class="btn btn-sm btn-outline-danger">Eliminar</button>
                                     </form>
                                 </div>
-                                <span class="badge badge-<?php echo $row['visivel'] == 1 ? 'success' : 'secondary'; ?> mt-2">
-                                    <?php echo $row['visivel'] == 1 ? 'Visível' : 'Oculta'; ?>
-                                </span>
+                                <div class="mt-2">
+                                    <span class="badge badge-<?php echo $row['visivel'] == 1 ? 'success' : 'secondary'; ?>">
+                                        <?php echo $row['visivel'] == 1 ? 'Visível' : 'Oculta'; ?>
+                                    </span>
+                                    <?php
+                                    $statusBadgeClass = [
+                                        'aprovado' => 'success',
+                                        'pendente' => 'warning',
+                                        'rejeitado' => 'danger'
+                                    ];
+                                    $statusIcon = [
+                                        'aprovado' => '✓',
+                                        'pendente' => '⏳',
+                                        'rejeitado' => '✗'
+                                    ];
+                                    $status = $row['status'] ?? 'aprovado';
+                                    ?>
+                                    <span class="badge badge-<?php echo $statusBadgeClass[$status] ?? 'secondary'; ?>">
+                                        <?php echo ($statusIcon[$status] ?? '') . ' ' . ucfirst($status); ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
