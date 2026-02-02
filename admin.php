@@ -151,6 +151,101 @@ try {
         exit;
     }
 
+    // Fotos (Photo Gallery)
+    if (isset($_POST['upload_photo'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            $descricao = trim($_POST['descricao'] ?? '');
+            $visivel = isset($_POST['visivel']) ? 1 : 0;
+            
+            // Validar tipo de arquivo
+            $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            $fileType = $_FILES['foto']['type'];
+            
+            if (!in_array($fileType, $allowedTypes)) {
+                $_SESSION['photo_error'] = "Tipo de arquivo não permitido. Use apenas JPEG, PNG, GIF ou WEBP.";
+                header('Location: admin.php#fotos');
+                exit;
+            }
+            
+            // Validar tamanho (máximo 5MB)
+            if ($_FILES['foto']['size'] > 5 * 1024 * 1024) {
+                $_SESSION['photo_error'] = "Arquivo muito grande. Tamanho máximo: 5MB.";
+                header('Location: admin.php#fotos');
+                exit;
+            }
+            
+            // Gerar nome único para o arquivo
+            $extensao = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+            $nomeArquivo = 'foto_' . time() . '_' . bin2hex(random_bytes(8)) . '.' . $extensao;
+            $caminhoDestino = __DIR__ . '/img/uploads/' . $nomeArquivo;
+            $caminhoRelativo = 'img/uploads/' . $nomeArquivo;
+            
+            // Mover arquivo para diretório de uploads
+            if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminhoDestino)) {
+                // Salvar no banco de dados
+                $stmt = $db->prepare('INSERT INTO fotos (nome_foto, caminho, descricao, visivel) VALUES (:nome_foto, :caminho, :descricao, :visivel)');
+                $stmt->bindValue(':nome_foto', $_FILES['foto']['name'], SQLITE3_TEXT);
+                $stmt->bindValue(':caminho', $caminhoRelativo, SQLITE3_TEXT);
+                $stmt->bindValue(':descricao', $descricao, SQLITE3_TEXT);
+                $stmt->bindValue(':visivel', $visivel, SQLITE3_INTEGER);
+                $stmt->execute();
+                
+                $_SESSION['photo_success'] = "Foto enviada com sucesso!";
+            } else {
+                $_SESSION['photo_error'] = "Erro ao fazer upload da foto.";
+            }
+        } else {
+            $_SESSION['photo_error'] = "Nenhuma foto foi selecionada ou ocorreu um erro no upload.";
+        }
+        
+        header('Location: admin.php#fotos');
+        exit;
+    }
+    
+    if (isset($_POST['delete_photo'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        
+        $id_foto = $_POST['id_foto'];
+        
+        // Obter caminho da foto antes de deletar
+        $stmt = $db->prepare('SELECT caminho FROM fotos WHERE id = :id');
+        $stmt->bindValue(':id', $id_foto, SQLITE3_INTEGER);
+        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        
+        if ($result) {
+            $caminhoCompleto = __DIR__ . '/' . $result['caminho'];
+            
+            // Deletar do banco de dados
+            $stmt = $db->prepare('DELETE FROM fotos WHERE id = :id');
+            $stmt->bindValue(':id', $id_foto, SQLITE3_INTEGER);
+            $stmt->execute();
+            
+            // Deletar arquivo físico
+            if (file_exists($caminhoCompleto)) {
+                unlink($caminhoCompleto);
+            }
+            
+            $_SESSION['photo_success'] = "Foto deletada com sucesso!";
+        }
+        
+        header('Location: admin.php#fotos');
+        exit;
+    }
+    
+    if (isset($_POST['toggle_photo_visibility'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        
+        $id_foto = $_POST['id_foto'];
+        $stmt = $db->prepare('UPDATE fotos SET visivel = NOT visivel WHERE id = :id');
+        $stmt->bindValue(':id', $id_foto, SQLITE3_INTEGER);
+        $stmt->execute();
+        
+        header('Location: admin.php#fotos');
+        exit;
+    }
+
     // Adesão: obter anos e dados
     $years = [];
     $stmt = $db->prepare('SELECT DISTINCT strftime("%Y", data_registro) as year FROM tomazia_clientes ORDER BY year DESC');
@@ -259,6 +354,7 @@ if (isset($_GET['edit_event'])) {
         <li class="nav-item"><a class="nav-link active" id="tab-dashboard" data-toggle="tab" href="#dashboard" role="tab">Adesão</a></li>
         <li class="nav-item"><a class="nav-link" id="tab-produtos" data-toggle="tab" href="#produtos" role="tab">Produtos</a></li>
         <li class="nav-item"><a class="nav-link" id="tab-eventos" data-toggle="tab" href="#eventos" role="tab">Eventos</a></li>
+        <li class="nav-item"><a class="nav-link" id="tab-fotos" data-toggle="tab" href="#fotos" role="tab">Fotos</a></li>
         <li class="nav-item"><a class="nav-link" id="tab-sms" data-toggle="tab" href="#sms" role="tab">SMS Marketing</a></li>
     </ul>
     <div class="tab-content">
@@ -500,6 +596,113 @@ if (isset($_GET['edit_event'])) {
                     </table>
                 </div>
                 <p class="text-info mt-2">Total de números registados: <strong><?php echo $count; ?></strong></p>
+            </div>
+        </div>
+        <!-- Fotos (Photo Gallery) -->
+        <div class="tab-pane fade" id="fotos" role="tabpanel">
+            <div class="form-section">
+                <div class="section-title">Upload de Nova Foto</div>
+                
+                <?php if (isset($_SESSION['photo_success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?php echo htmlspecialchars($_SESSION['photo_success']); ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php unset($_SESSION['photo_success']); ?>
+                <?php endif; ?>
+                
+                <?php if (isset($_SESSION['photo_error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?php echo htmlspecialchars($_SESSION['photo_error']); ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php unset($_SESSION['photo_error']); ?>
+                <?php endif; ?>
+                
+                <form method="POST" action="admin.php#fotos" enctype="multipart/form-data">
+                    <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                    
+                    <div class="form-group">
+                        <label for="foto">Selecionar Foto</label>
+                        <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
+                        <small class="form-text" style="color: var(--text-medium);">
+                            Formatos aceitos: JPEG, PNG, GIF, WEBP. Tamanho máximo: 5MB
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descricao">Descrição (opcional)</label>
+                        <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Descrição da foto">
+                    </div>
+                    
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="visivel" name="visivel" checked>
+                        <label class="form-check-label" for="visivel">Visível na galeria</label>
+                    </div>
+                    
+                    <button type="submit" name="upload_photo" class="btn btn-primary">Upload Foto</button>
+                </form>
+            </div>
+            
+            <div>
+                <div class="section-title">Galeria de Fotos</div>
+                <div class="row">
+                    <?php
+                    $result = $db->query('SELECT * FROM fotos ORDER BY data_upload DESC');
+                    $count = 0;
+                    while ($row = $result->fetchArray(SQLITE3_ASSOC)):
+                        $count++;
+                    ?>
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card" style="background: var(--surface-dark); border: 1px solid var(--border-color);">
+                            <img src="<?php echo htmlspecialchars($row['caminho']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['nome_foto']); ?>" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h6 class="card-title" style="color: var(--primary-gold); font-size: 0.9rem;"><?php echo htmlspecialchars($row['nome_foto']); ?></h6>
+                                <?php if (!empty($row['descricao'])): ?>
+                                    <p class="card-text" style="color: var(--text-light); font-size: 0.85rem;"><?php echo htmlspecialchars($row['descricao']); ?></p>
+                                <?php endif; ?>
+                                <p class="card-text" style="font-size: 0.8rem; color: var(--text-medium);">
+                                    <?php 
+                                    if (!empty($row['data_upload'])) {
+                                        $data = DateTime::createFromFormat('Y-m-d H:i:s', $row['data_upload']);
+                                        echo $data ? $data->format('d/m/Y H:i') : '—';
+                                    } else {
+                                        echo '—';
+                                    }
+                                    ?>
+                                </p>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <form method="POST" style="display:inline;" action="admin.php#fotos">
+                                        <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                                        <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="toggle_photo_visibility" class="btn btn-sm btn-outline-info">
+                                            <?php echo $row['visivel'] == 1 ? 'Ocultar' : 'Mostrar'; ?>
+                                        </button>
+                                    </form>
+                                    <form method="POST" style="display:inline;" action="admin.php#fotos" onsubmit="return confirm('Deletar esta foto?');">
+                                        <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                                        <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" name="delete_photo" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                    </form>
+                                </div>
+                                <span class="badge badge-<?php echo $row['visivel'] == 1 ? 'success' : 'secondary'; ?> mt-2">
+                                    <?php echo $row['visivel'] == 1 ? 'Visível' : 'Oculta'; ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
+                    <?php if ($count === 0): ?>
+                        <div class="col-12 text-center">
+                            <p class="lead" style="color: var(--text-medium);">Nenhuma foto carregada ainda.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <p class="text-info mt-2">Total de fotos: <strong><?php echo $count; ?></strong></p>
             </div>
         </div>
     </div>
