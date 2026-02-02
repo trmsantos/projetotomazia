@@ -761,15 +761,16 @@ if (isset($_GET['edit_event'])) {
                 <div class="section-title mt-4">Galeria de Fotos</div>
                 <div class="row">
                     <?php
-                    // Build query based on filter
+                    // Build query based on filter using prepared statements
                     $filter = $_GET['filter_status'] ?? 'todas';
                     if ($filter === 'todas') {
-                        $query = "SELECT * FROM fotos ORDER BY data_upload DESC";
+                        $result = $db->query("SELECT * FROM fotos ORDER BY data_upload DESC");
                     } else {
-                        $query = "SELECT * FROM fotos WHERE status = '" . SQLite3::escapeString($filter) . "' ORDER BY data_upload DESC";
+                        $stmt = $db->prepare("SELECT * FROM fotos WHERE status = :status ORDER BY data_upload DESC");
+                        $stmt->bindValue(':status', $filter, SQLITE3_TEXT);
+                        $result = $stmt->execute();
                     }
                     
-                    $result = $db->query($query);
                     $count = 0;
                     while ($row = $result->fetchArray(SQLITE3_ASSOC)):
                         $count++;
