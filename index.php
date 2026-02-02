@@ -255,11 +255,11 @@ try {
                 isValid = false;
             }
             
-            // Validar Telefone (formato português: 9 dígitos, começando por 9, 2 ou 3)
+            // Validar Telefone (formato português: 9 dígitos, começando por 9 - números móveis)
             const telefone = document.getElementById('telefone').value.trim();
-            const telefoneRegex = /^[923]\d{8}$/;
+            const telefoneRegex = /^9\d{8}$/;
             if (!telefoneRegex.test(telefone)) {
-                errorMessages.push('Por favor, insira um número de telefone português válido (9 dígitos, começando por 9, 2 ou 3).');
+                errorMessages.push('Por favor, insira um número de telemóvel português válido (9 dígitos, começando por 9).');
                 isValid = false;
             }
             

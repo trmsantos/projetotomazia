@@ -2,6 +2,10 @@
 session_start();
 require_once 'config.php';
 
+// SMS Marketing constants
+define('SMS_MIN_LENGTH', 10);
+define('SMS_MAX_LENGTH', 160);
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit;
@@ -101,8 +105,8 @@ try {
         $mensagem = trim($_POST['mensagem'] ?? '');
         $destinatarios = $_POST['destinatarios'] ?? 'all';
         
-        if (strlen($mensagem) < 10) {
-            $_SESSION['sms_error'] = "A mensagem deve ter pelo menos 10 caracteres.";
+        if (strlen($mensagem) < SMS_MIN_LENGTH) {
+            $_SESSION['sms_error'] = "A mensagem deve ter pelo menos " . SMS_MIN_LENGTH . " caracteres.";
             header('Location: admin.php#sms');
             exit;
         }
@@ -315,7 +319,10 @@ if (isset($_GET['edit_event'])) {
                         <div class="form-group col-md-3"><input type="text" class="form-control" name="descricao" placeholder="Descrição" value="<?php echo $edit_event['descricao'] ?? ''; ?>"></div>
                     </div>
                     <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="visivel" name="visivel" <?php echo (!isset($edit_event) || (isset($edit_event['visivel']) && $edit_event['visivel'] == 1)) ? 'checked' : ''; ?>>
+                        <input type="checkbox" class="form-check-input" id="visivel" name="visivel" <?php 
+                            $is_visible = !isset($edit_event) || (isset($edit_event['visivel']) && $edit_event['visivel'] == 1);
+                            echo $is_visible ? 'checked' : ''; 
+                        ?>>
                         <label class="form-check-label" for="visivel">Visível na página principal</label>
                     </div>
                     <button type="submit" class="btn btn-primary"><?php echo $edit_event ? 'Atualizar' : 'Adicionar'; ?></button>
@@ -427,9 +434,9 @@ if (isset($_GET['edit_event'])) {
                         <label for="mensagem">Mensagem SMS</label>
                         <textarea class="form-control" id="mensagem" name="mensagem" rows="5" 
                                   placeholder="Escreva a sua mensagem de marketing aqui..." 
-                                  maxlength="160" required></textarea>
+                                  maxlength="<?php echo SMS_MAX_LENGTH; ?>" required></textarea>
                         <small class="form-text" style="color: var(--text-medium);">
-                            Caracteres: <span id="charCount">0</span>/160
+                            Caracteres: <span id="charCount">0</span>/<?php echo SMS_MAX_LENGTH; ?>
                         </small>
                     </div>
                     
@@ -515,10 +522,11 @@ if (isset($_GET['edit_event'])) {
         // SMS character counter
         $('#mensagem').on('input', function() {
             var count = $(this).val().length;
+            var maxLength = <?php echo SMS_MAX_LENGTH; ?>;
             $('#charCount').text(count);
-            if (count > 160) {
+            if (count > maxLength) {
                 $('#charCount').css('color', '#dc3545');
-            } else if (count > 140) {
+            } else if (count > (maxLength - 20)) {
                 $('#charCount').css('color', '#ffc107');
             } else {
                 $('#charCount').css('color', 'var(--text-medium)');

@@ -40,10 +40,10 @@ try {
             $errors[] = "Por favor, insira um endereço de email válido.";
         }
         
-        // Validar Telefone (formato português: 9 dígitos, começando por 9, 2 ou 3)
+        // Validar Telefone (formato português: 9 dígitos, começando por 9 - números móveis)
         $telefone = trim($_POST['telefone'] ?? '');
-        if (!preg_match('/^[923]\d{8}$/', $telefone)) {
-            $errors[] = "Por favor, insira um número de telefone português válido (9 dígitos, começando por 9, 2 ou 3).";
+        if (!preg_match('/^9\d{8}$/', $telefone)) {
+            $errors[] = "Por favor, insira um número de telemóvel português válido (9 dígitos, começando por 9).";
         }
         
         // Se houver erros, mostrar mensagem
