@@ -127,7 +127,7 @@ O script de migração `migrate_add_unique_constraints.php` realiza as seguintes
 - Removeu 1 duplicata de username
 - Total: 8 registros duplicados removidos
 
-**Nota:** Se executar o script novamente, nenhuma duplicata será removida pois os constraints já estarão ativos.
+**Nota:** Esta é uma migração única. Se executar o script novamente após a primeira execução bem-sucedida, nenhuma duplicata será removida (0/0/0) pois os constraints únicos já estarão ativos e impedirão a criação de novos duplicados.
 
 ### Lógica de Upsert Implementada
 

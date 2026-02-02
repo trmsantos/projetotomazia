@@ -141,7 +141,8 @@ try {
                 $message .= " [Modo de simulação - API não configurada]";
             }
             $_SESSION['sms_success'] = $message;
-            $_SESSION['sms_phones'] = array_slice($telefones, 0, 10); // Mostrar apenas os primeiros 10
+            // Armazenar apenas os primeiros 10 números para exibição (evitar sobrecarga de memória da sessão)
+            $_SESSION['sms_phones'] = array_slice($telefones, 0, 10);
         } else {
             $_SESSION['sms_error'] = "Erro ao enviar SMS. " . implode('; ', $sendResult['errors']);
         }
