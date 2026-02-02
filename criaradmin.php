@@ -10,11 +10,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             $db = getDbConnection();
-            $stmt = $db->prepare('INSERT INTO admin_users (username, psw) VALUES (:username, :password)');
-            $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-            $stmt->bindValue(':password', $hash, SQLITE3_TEXT);
-            $stmt->execute();
-            echo "<p style='color:green;font-weight:bold'>Utilizador criado com sucesso!</p>";
+            
+            // Verificar se o username já existe
+            $checkStmt = $db->prepare('SELECT id FROM admin_users WHERE username = :username');
+            $checkStmt->bindValue(':username', $username, SQLITE3_TEXT);
+            $result = $checkStmt->execute()->fetchArray(SQLITE3_ASSOC);
+            
+            if ($result) {
+                // Username já existe - atualizar password
+                $stmt = $db->prepare('UPDATE admin_users SET psw = :password WHERE username = :username');
+                $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+                $stmt->bindValue(':password', $hash, SQLITE3_TEXT);
+                $stmt->execute();
+                echo "<p style='color:green;font-weight:bold'>Password do utilizador atualizada com sucesso!</p>";
+            } else {
+                // Inserir novo utilizador
+                $stmt = $db->prepare('INSERT INTO admin_users (username, psw) VALUES (:username, :password)');
+                $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+                $stmt->bindValue(':password', $hash, SQLITE3_TEXT);
+                $stmt->execute();
+                echo "<p style='color:green;font-weight:bold'>Utilizador criado com sucesso!</p>";
+            }
         } catch (Exception $e) {
             echo "<p style='color:red'>Erro: " . $e->getMessage() . "</p>";
         }

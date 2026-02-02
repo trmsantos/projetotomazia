@@ -250,6 +250,7 @@ $nome = $_SESSION['nome'];
     </button>
     <div class="nav-menu">
         <a href="#home">Início</a>
+        <a href="#galeria">Galeria</a>
         <a href="#menu">Menu</a>
         <a href="#eventos">Eventos</a>
         <a href="#localizacao">Onde nos encontrar</a>
@@ -285,6 +286,61 @@ $nome = $_SESSION['nome'];
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section id="galeria" class="gallery-section" style="background-color: #5D1F3A;">
+        <div class="container">
+            <h2>📸 Galeria de Fotos 📸</h2>
+            <?php
+            try {
+                $db = getDbConnection();
+                $stmt = $db->prepare('SELECT * FROM fotos WHERE visivel = 1 ORDER BY data_upload DESC');
+                $result = $stmt->execute();
+                $fotos = [];
+                while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                    $fotos[] = $row;
+                }
+                
+                if (count($fotos) > 0):
+            ?>
+            <div id="photoCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+                <ol class="carousel-indicators">
+                    <?php for ($i = 0; $i < count($fotos); $i++): ?>
+                        <li data-target="#photoCarousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $i === 0 ? 'active' : ''; ?>"></li>
+                    <?php endfor; ?>
+                </ol>
+                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);">
+                    <?php foreach ($fotos as $index => $foto): ?>
+                        <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                            <img src="<?php echo htmlspecialchars($foto['caminho']); ?>" class="d-block w-100" alt="<?php echo htmlspecialchars($foto['nome_foto']); ?>" style="max-height: 500px; object-fit: contain; background: #000;">
+                            <?php if (!empty($foto['descricao'])): ?>
+                                <div class="carousel-caption d-none d-md-block" style="background: rgba(61, 15, 36, 0.8); border-radius: 10px; padding: 10px;">
+                                    <p><?php echo htmlspecialchars($foto['descricao']); ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <a class="carousel-control-prev" href="#photoCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#photoCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Próxima</span>
+                </a>
+            </div>
+            <?php else: ?>
+                <div class="text-center">
+                    <p class="lead" style="color: #a0a0a0;">Ainda não há fotos na galeria.</p>
+                </div>
+            <?php endif;
+            } catch (Exception $e) {
+                error_log("Error loading photos: " . $e->getMessage());
+                echo '<div class="text-center"><p style="color: #a0a0a0;">Erro ao carregar fotos.</p></div>';
+            }
+            ?>
         </div>
     </section>
 
