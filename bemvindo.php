@@ -137,8 +137,50 @@ $nome = $_SESSION['nome'];
             border-radius: 10px;
         }
         
-        .event-card h3 { color: #D4AF37; }
-        .event-card .event-date { color: #a0a0a0; }
+        .event-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #D4AF37, #FFD700);
+        }
+        .event-card h3 { 
+            color: #D4AF37; 
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .event-card .event-date { 
+            color: #FFD700; 
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .event-card .event-description {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        .event-icon {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #D4AF37, #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
 
         .btn-copy-icon {
             background: none;
@@ -259,18 +301,19 @@ $nome = $_SESSION['nome'];
 
     <section id="eventos" class="events-section">
         <div class="container">
-            <h2>Eventos</h2>
+            <h2>🎉 Próximos Eventos 🎉</h2>
             <div class="row">
                 <?php
                 try {
                     $db = getDbConnection();
-                    $stmt = $db->prepare('SELECT * FROM eventos ORDER BY data_evento DESC');
+                    $stmt = $db->prepare('SELECT * FROM eventos WHERE visivel = 1 ORDER BY data_evento DESC');
                     $result = $stmt->execute();
                     $hasEvents = false;
                     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                         $hasEvents = true;
                         echo '<div class="col-md-6 col-lg-4 mb-4">';
-                        echo '<div class="event-card p-3 h-100" style="transition: transform 0.3s;" onmouseover="this.style.transform=\'translateY(-5px)\'" onmouseout="this.style.transform=\'translateY(0)\'">';
+                        echo '<div class="event-card p-4 h-100" style="transition: all 0.3s; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);" onmouseover="this.style.transform=\'translateY(-8px)\'; this.style.boxShadow=\'0 8px 25px rgba(212, 175, 55, 0.5)\';" onmouseout="this.style.transform=\'translateY(0)\'; this.style.boxShadow=\'0 4px 15px rgba(212, 175, 55, 0.3)\';">';
+                        echo '<div class="event-icon">🎊</div>';
                         echo '<h3>' . htmlspecialchars($row['nome_evento']) . '</h3>';
                         if (!empty($row['data_evento'])) {
                             $data = DateTime::createFromFormat('Y-m-d', $row['data_evento']);
@@ -278,7 +321,9 @@ $nome = $_SESSION['nome'];
                                 echo '<p class="event-date">📅 ' . $data->format('d/m/Y') . '</p>';
                             }
                         }
-                        echo '<p>' . htmlspecialchars($row['descricao']) . '</p>';
+                        if (!empty($row['descricao'])) {
+                            echo '<p class="event-description">' . htmlspecialchars($row['descricao']) . '</p>';
+                        }
                         echo '</div>';
                         echo '</div>';
                     }

@@ -57,17 +57,19 @@ try {
         $nome_evento = trim($_POST['nome_evento'] ?? '');
         $data_evento = trim($_POST['data_evento'] ?? '');
         $descricao = trim($_POST['descricao'] ?? '');
+        $visivel = isset($_POST['visivel']) ? 1 : 0;
         if ($nome_evento) { // Data não é obrigatória!
             if (!empty($_POST['id_evento'])) {
                 $id_evento = $_POST['id_evento'];
-                $stmt = $db->prepare('UPDATE eventos SET nome_evento = :nome_evento, data_evento = :data_evento, descricao = :descricao WHERE id = :id');
+                $stmt = $db->prepare('UPDATE eventos SET nome_evento = :nome_evento, data_evento = :data_evento, descricao = :descricao, visivel = :visivel WHERE id = :id');
                 $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
             } else {
-                $stmt = $db->prepare('INSERT INTO eventos (nome_evento, data_evento, descricao) VALUES (:nome_evento, :data_evento, :descricao)');
+                $stmt = $db->prepare('INSERT INTO eventos (nome_evento, data_evento, descricao, visivel) VALUES (:nome_evento, :data_evento, :descricao, :visivel)');
             }
             $stmt->bindValue(':nome_evento', $nome_evento, SQLITE3_TEXT);
             $stmt->bindValue(':data_evento', $data_evento, SQLITE3_TEXT);
             $stmt->bindValue(':descricao', $descricao, SQLITE3_TEXT);
+            $stmt->bindValue(':visivel', $visivel, SQLITE3_INTEGER);
             $stmt->execute();
             header('Location: admin.php#eventos');
             exit;
@@ -80,6 +82,49 @@ try {
         $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
         $stmt->execute();
         header('Location: admin.php#eventos');
+        exit;
+    }
+    if (isset($_POST['toggle_event_visibility'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        $id_evento = $_POST['id_evento'];
+        $stmt = $db->prepare('UPDATE eventos SET visivel = NOT visivel WHERE id = :id');
+        $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
+        $stmt->execute();
+        header('Location: admin.php#eventos');
+        exit;
+    }
+
+    // SMS Marketing
+    if (isset($_POST['send_sms'])) {
+        if (!isset($_POST[CSRF_TOKEN_NAME]) || !verifyCsrfToken($_POST[CSRF_TOKEN_NAME])) die("Erro: Token CSRF inválido.");
+        
+        $mensagem = trim($_POST['mensagem'] ?? '');
+        $destinatarios = $_POST['destinatarios'] ?? 'all';
+        
+        if (strlen($mensagem) < 10) {
+            $_SESSION['sms_error'] = "A mensagem deve ter pelo menos 10 caracteres.";
+            header('Location: admin.php#sms');
+            exit;
+        }
+        
+        // Buscar números de telefone
+        $telefones = [];
+        if ($destinatarios === 'all') {
+            $result = $db->query('SELECT DISTINCT telemovel FROM tomazia_clientes WHERE telemovel IS NOT NULL AND telemovel != ""');
+            while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                if (!empty($row['telemovel'])) {
+                    $telefones[] = $row['telemovel'];
+                }
+            }
+        }
+        
+        // NOTA: Aqui seria integrada a API de SMS
+        // Por enquanto, apenas simulamos o envio
+        $_SESSION['sms_success'] = "SMS preparado para envio a " . count($telefones) . " número(s). Integração com API de SMS pendente.";
+        $_SESSION['sms_phones'] = $telefones;
+        $_SESSION['sms_message'] = $mensagem;
+        
+        header('Location: admin.php#sms');
         exit;
     }
 
@@ -160,6 +205,13 @@ if (isset($_GET['edit_event'])) {
         .table-hover tbody tr:hover { background: rgba(212, 175, 55, 0.1); }
         .logout-form { text-align: right; margin-top: 20px;}
         .chart-container { min-height:320px; }
+        .alert { border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .alert-success { background: rgba(40, 167, 69, 0.2); border: 1px solid rgba(40, 167, 69, 0.5); color: #66d98c; }
+        .alert-danger { background: rgba(220, 53, 69, 0.2); border: 1px solid rgba(220, 53, 69, 0.5); color: #ff6b7f; }
+        .alert-info { background: rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.5); color: #5bc0de; }
+        .alert-warning { background: rgba(255, 193, 7, 0.2); border: 1px solid rgba(255, 193, 7, 0.5); color: #ffc107; }
+        .btn-outline-info { border-color: #17a2b8; color: #17a2b8; }
+        .btn-outline-info:hover { background: #17a2b8; color: white; }
         @media (max-width: 1000px) {
             .admin-main { max-width: 98vw; }
             .tab-content { padding: 18px;}
@@ -184,6 +236,7 @@ if (isset($_GET['edit_event'])) {
         <li class="nav-item"><a class="nav-link active" id="tab-dashboard" data-toggle="tab" href="#dashboard" role="tab">Adesão</a></li>
         <li class="nav-item"><a class="nav-link" id="tab-produtos" data-toggle="tab" href="#produtos" role="tab">Produtos</a></li>
         <li class="nav-item"><a class="nav-link" id="tab-eventos" data-toggle="tab" href="#eventos" role="tab">Eventos</a></li>
+        <li class="nav-item"><a class="nav-link" id="tab-sms" data-toggle="tab" href="#sms" role="tab">SMS Marketing</a></li>
     </ul>
     <div class="tab-content">
         <!-- Adesão -->
@@ -261,6 +314,10 @@ if (isset($_GET['edit_event'])) {
                         <div class="form-group col-md-3"><input type="date" class="form-control" name="data_evento" value="<?php echo $edit_event['data_evento'] ?? ''; ?>"></div>
                         <div class="form-group col-md-3"><input type="text" class="form-control" name="descricao" placeholder="Descrição" value="<?php echo $edit_event['descricao'] ?? ''; ?>"></div>
                     </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="visivel" name="visivel" <?php echo (!isset($edit_event) || (isset($edit_event['visivel']) && $edit_event['visivel'] == 1)) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="visivel">Visível na página principal</label>
+                    </div>
                     <button type="submit" class="btn btn-primary"><?php echo $edit_event ? 'Atualizar' : 'Adicionar'; ?></button>
                     <?php if ($edit_event): ?><a href="admin.php#eventos" class="btn btn-outline-warning ml-2">Cancelar</a><?php endif; ?>
                 </form>
@@ -268,7 +325,7 @@ if (isset($_GET['edit_event'])) {
             <div>
                 <div class="section-title">Lista de Eventos</div>
                 <table class="table table-hover">
-                    <thead><tr><th>Nome</th><th>Data</th><th>Descrição</th><th>Ações</th></tr></thead>
+                    <thead><tr><th>Nome</th><th>Data</th><th>Descrição</th><th>Visível</th><th>Ações</th></tr></thead>
                     <tbody>
                         <?php
                         $result = $db->query('SELECT * FROM eventos ORDER BY data_evento DESC');
@@ -288,7 +345,21 @@ if (isset($_GET['edit_event'])) {
                             </td>
                             <td><?php echo htmlspecialchars($row['descricao']); ?></td>
                             <td>
+                                <?php if ($row['visivel'] == 1): ?>
+                                    <span style="color: #28a745;">✓ Sim</span>
+                                <?php else: ?>
+                                    <span style="color: #dc3545;">✗ Não</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
                                 <a href="admin.php?edit_event=<?php echo $row['id']; ?>#eventos" class="btn btn-sm btn-outline-warning">Editar</a>
+                                <form method="POST" style="display:inline;" action="admin.php#eventos">
+                                    <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                                    <input type="hidden" name="id_evento" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" name="toggle_event_visibility" class="btn btn-sm btn-outline-info">
+                                        <?php echo $row['visivel'] == 1 ? 'Ocultar' : 'Mostrar'; ?>
+                                    </button>
+                                </form>
                                 <form method="POST" style="display:inline;" action="admin.php#eventos" onsubmit="return confirm('Eliminar este evento?');">
                                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                     <input type="hidden" name="id_evento" value="<?php echo $row['id']; ?>">
@@ -299,6 +370,110 @@ if (isset($_GET['edit_event'])) {
                         <?php endwhile; ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <!-- SMS Marketing -->
+        <div class="tab-pane fade" id="sms" role="tabpanel">
+            <div class="form-section">
+                <div class="section-title">Envio de SMS Marketing</div>
+                
+                <?php if (isset($_SESSION['sms_success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?php echo htmlspecialchars($_SESSION['sms_success']); ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php 
+                    if (isset($_SESSION['sms_phones']) && !empty($_SESSION['sms_phones'])): 
+                        echo '<div class="alert alert-info"><strong>Números de destino:</strong> ' . implode(', ', array_slice($_SESSION['sms_phones'], 0, 10));
+                        if (count($_SESSION['sms_phones']) > 10) {
+                            echo ' e mais ' . (count($_SESSION['sms_phones']) - 10) . ' número(s)';
+                        }
+                        echo '</div>';
+                    endif;
+                    unset($_SESSION['sms_success']);
+                    unset($_SESSION['sms_phones']);
+                    unset($_SESSION['sms_message']);
+                    ?>
+                <?php endif; ?>
+                
+                <?php if (isset($_SESSION['sms_error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?php echo htmlspecialchars($_SESSION['sms_error']); ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <?php unset($_SESSION['sms_error']); ?>
+                <?php endif; ?>
+                
+                <p class="text-warning mb-3">
+                    <strong>Nota:</strong> Esta funcionalidade está preparada para integração com uma API de SMS. 
+                    Atualmente, simula o envio para fins de teste.
+                </p>
+                
+                <form method="POST" action="admin.php#sms" id="smsForm">
+                    <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
+                    
+                    <div class="form-group">
+                        <label for="destinatarios">Destinatários</label>
+                        <select class="custom-select" id="destinatarios" name="destinatarios" required>
+                            <option value="all">Todos os clientes registados</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem SMS</label>
+                        <textarea class="form-control" id="mensagem" name="mensagem" rows="5" 
+                                  placeholder="Escreva a sua mensagem de marketing aqui..." 
+                                  maxlength="160" required></textarea>
+                        <small class="form-text" style="color: var(--text-medium);">
+                            Caracteres: <span id="charCount">0</span>/160
+                        </small>
+                    </div>
+                    
+                    <button type="submit" name="send_sms" class="btn btn-primary" onclick="return confirm('Tem certeza que deseja enviar este SMS?');">
+                        Enviar SMS
+                    </button>
+                </form>
+            </div>
+            
+            <div>
+                <div class="section-title">Números de Telefone Registados</div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead><tr><th>Nome</th><th>Telefone</th><th>Email</th><th>Data de Registo</th></tr></thead>
+                        <tbody>
+                            <?php
+                            $result = $db->query('SELECT nome, telemovel, email, data_registro FROM tomazia_clientes WHERE telemovel IS NOT NULL AND telemovel != "" ORDER BY data_registro DESC');
+                            $count = 0;
+                            while ($row = $result->fetchArray(SQLITE3_ASSOC)):
+                                $count++;
+                            ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['nome']); ?></td>
+                                <td><?php echo htmlspecialchars($row['telemovel']); ?></td>
+                                <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                <td>
+                                    <?php 
+                                    if (!empty($row['data_registro'])) {
+                                        $data = DateTime::createFromFormat('Y-m-d H:i:s', $row['data_registro']);
+                                        echo $data ? $data->format('d/m/Y H:i') : '—';
+                                    } else {
+                                        echo '—';
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php endwhile; ?>
+                            <?php if ($count === 0): ?>
+                                <tr><td colspan="4" class="text-center">Nenhum número de telefone registado.</td></tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-info mt-2">Total de números registados: <strong><?php echo $count; ?></strong></p>
             </div>
         </div>
     </div>
@@ -334,6 +509,19 @@ if (isset($_GET['edit_event'])) {
                     x: { ticks: { color: 'var(--text-medium)' } }
                 },
                 plugins: { legend: { display: false } }
+            }
+        });
+        
+        // SMS character counter
+        $('#mensagem').on('input', function() {
+            var count = $(this).val().length;
+            $('#charCount').text(count);
+            if (count > 160) {
+                $('#charCount').css('color', '#dc3545');
+            } else if (count > 140) {
+                $('#charCount').css('color', '#ffc107');
+            } else {
+                $('#charCount').css('color', 'var(--text-medium)');
             }
         });
     });
