@@ -231,5 +231,55 @@ try {
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Validação do formulário
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            let isValid = true;
+            let errorMessages = [];
+            
+            // Validar Nome (mínimo 3 caracteres, apenas letras e espaços)
+            const nome = document.getElementById('nome').value.trim();
+            if (nome.length < 3) {
+                errorMessages.push('O nome deve ter pelo menos 3 caracteres.');
+                isValid = false;
+            } else if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(nome)) {
+                errorMessages.push('O nome deve conter apenas letras e espaços.');
+                isValid = false;
+            }
+            
+            // Validar Email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                errorMessages.push('Por favor, insira um endereço de email válido.');
+                isValid = false;
+            }
+            
+            // Validar Telefone (formato português: 9 dígitos, começando por 9 - números móveis)
+            const telefone = document.getElementById('telefone').value.trim();
+            const telefoneRegex = /^9\d{8}$/;
+            if (!telefoneRegex.test(telefone)) {
+                errorMessages.push('Por favor, insira um número de telemóvel português válido (9 dígitos, começando por 9).');
+                isValid = false;
+            }
+            
+            // Validar Termos e Condições
+            const termos = document.getElementById('termos').checked;
+            if (!termos) {
+                errorMessages.push('Deve aceitar os Termos e Condições para continuar.');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Erros de validação:\n\n' + errorMessages.join('\n'));
+            }
+        });
+        
+        // Formatar telefone enquanto digita (apenas números)
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
 </body>
 </html>

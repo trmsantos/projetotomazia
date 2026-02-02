@@ -23,9 +23,38 @@ try {
             die("Erro: Você deve aceitar os Termos e Condições para continuar.");
         }
 
-        $nome = htmlspecialchars($_POST['nome']);
-        $email = htmlspecialchars($_POST['email']);
-        $telefone = htmlspecialchars($_POST['telefone']);
+        // Validação robusta dos dados
+        $errors = [];
+        
+        // Validar Nome
+        $nome = trim($_POST['nome'] ?? '');
+        if (strlen($nome) < 3) {
+            $errors[] = "O nome deve ter pelo menos 3 caracteres.";
+        } elseif (!preg_match('/^[a-zA-ZÀ-ÿ\s]+$/u', $nome)) {
+            $errors[] = "O nome deve conter apenas letras e espaços.";
+        }
+        
+        // Validar Email
+        $email = trim($_POST['email'] ?? '');
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Por favor, insira um endereço de email válido.";
+        }
+        
+        // Validar Telefone (formato português: 9 dígitos, começando por 9 - números móveis)
+        $telefone = trim($_POST['telefone'] ?? '');
+        if (!preg_match('/^9\d{8}$/', $telefone)) {
+            $errors[] = "Por favor, insira um número de telemóvel português válido (9 dígitos, começando por 9).";
+        }
+        
+        // Se houver erros, mostrar mensagem
+        if (!empty($errors)) {
+            die("Erros de validação:<br><br>" . implode("<br>", $errors));
+        }
+        
+        // Sanitizar dados
+        $nome = htmlspecialchars($nome);
+        $email = htmlspecialchars($email);
+        $telefone = htmlspecialchars($telefone);
         $data_registro = date('Y-m-d H:i:s');
 
         $query = $db->prepare('SELECT COUNT(*) as count FROM tomazia_clientes WHERE user_id = :user_id');

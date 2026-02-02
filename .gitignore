@@ -39,3 +39,6 @@ build/
 # Test files
 /tmp/
 test-*.html
+
+# Test files
+test_*.php
