@@ -115,13 +115,19 @@ Sistema completo de prevenção e tratamento de duplicatas implementado em três
 
 ### Migração Executada
 
-O script de migração `migrate_add_unique_constraints.php`:
-1. Removeu 7 duplicatas de email
-2. Removeu 0 duplicatas de telemovel
-3. Removeu 1 duplicata de username
-4. Criou índices únicos nas três colunas
+O script de migração `migrate_add_unique_constraints.php` realiza as seguintes operações:
+1. Remove duplicatas de email da tabela tomazia_clientes
+2. Remove duplicatas de telemovel da tabela tomazia_clientes
+3. Remove duplicatas de username da tabela admin_users
+4. Cria índices únicos nas três colunas
 
-**Total de duplicatas removidas: 8 registros**
+**Exemplo de execução inicial (seus resultados podem variar):**
+- Removeu 7 duplicatas de email
+- Removeu 0 duplicatas de telemovel
+- Removeu 1 duplicata de username
+- Total: 8 registros duplicados removidos
+
+**Nota:** Se executar o script novamente, nenhuma duplicata será removida pois os constraints já estarão ativos.
 
 ### Lógica de Upsert Implementada
 

@@ -21,6 +21,8 @@ define('SMS_API_KEY', '');
 define('SMS_API_SECRET', '');
 define('SMS_API_FROM', '');
 define('SMS_API_ENDPOINT', 'https://api.example.com/sms');
+define('SMS_API_COUNTRY_CODE', '+351'); // Código do país para Portugal
+define('SMS_API_TIMEOUT', 30); // Timeout em segundos para requisições HTTP
 
 /**
  * Função para obter conexão com a base de dados
@@ -110,7 +112,7 @@ function sendSmsViaApi($telefones, $mensagem) {
         try {
             // Preparar dados para API
             $postData = [
-                'to' => '+351' . $telefone, // Adicionar código do país
+                'to' => SMS_API_COUNTRY_CODE . $telefone, // Usar código do país configurável
                 'from' => SMS_API_FROM,
                 'message' => $mensagem
             ];
@@ -124,7 +126,7 @@ function sendSmsViaApi($telefones, $mensagem) {
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . SMS_API_KEY
             ]);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_TIMEOUT, SMS_API_TIMEOUT); // Usar timeout configurável
             
             // Executar requisição
             $response = curl_exec($ch);

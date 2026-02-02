@@ -14,41 +14,45 @@ try {
     
     // 1. Primeiro, remover duplicatas de email na tabela tomazia_clientes
     echo "\n1. Limpando duplicatas de email...\n";
+    // Usar abordagem compatível com SQLite: criar tabela temporária com IDs a manter
+    $db->exec("
+        CREATE TEMPORARY TABLE IF NOT EXISTS ids_to_keep_email AS
+        SELECT MIN(id) as id FROM tomazia_clientes GROUP BY email
+    ");
     $db->exec("
         DELETE FROM tomazia_clientes 
-        WHERE id NOT IN (
-            SELECT MIN(id) 
-            FROM tomazia_clientes 
-            GROUP BY email
-        )
+        WHERE id NOT IN (SELECT id FROM ids_to_keep_email)
     ");
     $emailDeleted = $db->changes();
+    $db->exec("DROP TABLE IF EXISTS ids_to_keep_email");
     echo "✓ {$emailDeleted} registro(s) duplicado(s) de email removido(s)\n";
     
     // 2. Remover duplicatas de telemovel
     echo "\n2. Limpando duplicatas de telemovel...\n";
     $db->exec("
+        CREATE TEMPORARY TABLE IF NOT EXISTS ids_to_keep_telemovel AS
+        SELECT MIN(id) as id FROM tomazia_clientes GROUP BY telemovel
+    ");
+    $db->exec("
         DELETE FROM tomazia_clientes 
-        WHERE id NOT IN (
-            SELECT MIN(id) 
-            FROM tomazia_clientes 
-            GROUP BY telemovel
-        )
+        WHERE id NOT IN (SELECT id FROM ids_to_keep_telemovel)
     ");
     $telemovelDeleted = $db->changes();
+    $db->exec("DROP TABLE IF EXISTS ids_to_keep_telemovel");
     echo "✓ {$telemovelDeleted} registro(s) duplicado(s) de telemovel removido(s)\n";
     
     // 3. Remover duplicatas de username em admin_users
     echo "\n3. Limpando duplicatas de username...\n";
     $db->exec("
+        CREATE TEMPORARY TABLE IF NOT EXISTS ids_to_keep_username AS
+        SELECT MIN(id) as id FROM admin_users GROUP BY username
+    ");
+    $db->exec("
         DELETE FROM admin_users 
-        WHERE id NOT IN (
-            SELECT MIN(id) 
-            FROM admin_users 
-            GROUP BY username
-        )
+        WHERE id NOT IN (SELECT id FROM ids_to_keep_username)
     ");
     $usernameDeleted = $db->changes();
+    $db->exec("DROP TABLE IF EXISTS ids_to_keep_username");
     echo "✓ {$usernameDeleted} registro(s) duplicado(s) de username removido(s)\n";
     
     // Verificar se os índices já existem

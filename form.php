@@ -57,11 +57,18 @@ try {
         $telefone = htmlspecialchars($telefone);
         $data_registro = date('Y-m-d H:i:s');
 
-        // Verificar se já existe registro com este email ou telefone
-        $query = $db->prepare('SELECT id, user_id FROM tomazia_clientes WHERE email = :email OR telemovel = :telefone LIMIT 1');
+        // Verificar se já existe registro com este email OU telefone
+        // Priorizar busca por email primeiro, depois por telefone
+        $query = $db->prepare('SELECT id, user_id FROM tomazia_clientes WHERE email = :email LIMIT 1');
         $query->bindValue(':email', $email, SQLITE3_TEXT);
-        $query->bindValue(':telefone', $telefone, SQLITE3_TEXT);
         $result = $query->execute()->fetchArray(SQLITE3_ASSOC);
+        
+        // Se não encontrou por email, verificar por telefone
+        if (!$result) {
+            $query = $db->prepare('SELECT id, user_id FROM tomazia_clientes WHERE telemovel = :telefone LIMIT 1');
+            $query->bindValue(':telefone', $telefone, SQLITE3_TEXT);
+            $result = $query->execute()->fetchArray(SQLITE3_ASSOC);
+        }
 
         if ($result) {
             // Registro duplicado encontrado - atualizar dados existentes
