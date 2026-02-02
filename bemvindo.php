@@ -295,7 +295,7 @@ $nome = $_SESSION['nome'];
             <?php
             try {
                 $db = getDbConnection();
-                $stmt = $db->prepare('SELECT * FROM fotos WHERE visivel = 1 ORDER BY data_upload DESC');
+                $stmt = $db->prepare("SELECT * FROM fotos WHERE visivel = 1 AND status = 'aprovado' ORDER BY data_upload DESC");
                 $result = $stmt->execute();
                 $fotos = [];
                 while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
