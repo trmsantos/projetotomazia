@@ -3,7 +3,7 @@ session_start();
 require_once 'config.php';
 
 if (!isset($_SESSION['nome'])) {
-    header('Location: erro.php');
+    header('Location: /erro');
     exit();
 }
 
@@ -15,7 +15,7 @@ $nome = $_SESSION['nome'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bar da Tomazia</title>
-    <link rel="icon" href="img/tomazia.png" type="image/png">
+    <link rel="icon" href="/img/tomazia.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -392,7 +392,7 @@ $nome = $_SESSION['nome'];
             <h2>Nosso Cardápio</h2>
             <div class="text-center">
                 <p class="lead" style="color: #a0a0a0;">Descubra a nossa seleção</p>
-                <a href="cardapio.php" class="btn btn-custom mt-3">Ver Cardápio Completo</a>
+                <a href="/cardapio" class="btn btn-custom mt-3">Ver Cardápio Completo</a>
             </div>
         </div>
     </section>

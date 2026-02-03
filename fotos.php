@@ -5,7 +5,7 @@ require_once 'config.php';
 // Verifique se o nome do usuário está na sessão
 if (!isset($_SESSION['nome'])) {
     // Redirecione para a página de erro
-    header('Location: erro.php');
+    header('Location: /erro');
     exit();
 }
 
@@ -100,7 +100,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviar Foto - Bar da Tomazia</title>
-    <link rel="icon" href="img/pngico.png" type="image/png">
+    <link rel="icon" href="/img/pngico.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -279,7 +279,7 @@ try {
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="bemvindo.php"><img src="img/tomazia.png" height="100" width="100"></a>
+    <a class="navbar-brand" href="bemvindo.php"><img src="/img/tomazia.png" height="100" width="100"></a>
 </nav>
 
 <div class="main-container">

@@ -60,7 +60,7 @@
     <canvas class="maintenance-gear-canvas"></canvas>
     <div class="video-overlay"></div>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#"><img src="img/tomazia.png" alt="Tomazia"></a>
+        <a class="navbar-brand" href="#"><img src="/img/tomazia.png" alt="Tomazia"></a>
     </nav>
     <div class="container">
         <div class="maintenance-container">

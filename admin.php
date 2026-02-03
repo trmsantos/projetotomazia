@@ -7,13 +7,13 @@ define('SMS_MIN_LENGTH', 10);
 define('SMS_MAX_LENGTH', 160);
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: login.php');
+    header('Location: /login');
     exit;
 }
 
 if (isset($_POST['logout'])) {
     session_destroy();
-    header('Location: login.php');
+    header('Location: /login');
     exit;
 }
 
@@ -40,7 +40,7 @@ try {
             $stmt->bindValue(':preco', $preco, SQLITE3_FLOAT);
             $stmt->bindValue(':tipo', $tipo, SQLITE3_TEXT);
             $stmt->execute();
-            header('Location: admin.php#produtos');
+            header('Location: /admin#produtos');
             exit;
         }
     }
@@ -51,7 +51,7 @@ try {
         $stmt = $db->prepare('DELETE FROM produtos WHERE id_produto = :id_produto');
         $stmt->bindValue(':id_produto', $id_produto, SQLITE3_INTEGER);
         $stmt->execute();
-        header('Location: admin.php#produtos');
+        header('Location: /admin#produtos');
         exit;
     }
 
@@ -75,7 +75,7 @@ try {
             $stmt->bindValue(':descricao', $descricao, SQLITE3_TEXT);
             $stmt->bindValue(':visivel', $visivel, SQLITE3_INTEGER);
             $stmt->execute();
-            header('Location: admin.php#eventos');
+            header('Location: /admin#eventos');
             exit;
         }
     }
@@ -85,7 +85,7 @@ try {
         $stmt = $db->prepare('DELETE FROM eventos WHERE id = :id');
         $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
         $stmt->execute();
-        header('Location: admin.php#eventos');
+        header('Location: /admin#eventos');
         exit;
     }
     if (isset($_POST['toggle_event_visibility'])) {
@@ -94,7 +94,7 @@ try {
         $stmt = $db->prepare('UPDATE eventos SET visivel = NOT visivel WHERE id = :id');
         $stmt->bindValue(':id', $id_evento, SQLITE3_INTEGER);
         $stmt->execute();
-        header('Location: admin.php#eventos');
+        header('Location: /admin#eventos');
         exit;
     }
 
@@ -107,7 +107,7 @@ try {
         
         if (strlen($mensagem) < SMS_MIN_LENGTH) {
             $_SESSION['sms_error'] = "A mensagem deve ter pelo menos " . SMS_MIN_LENGTH . " caracteres.";
-            header('Location: admin.php#sms');
+            header('Location: /admin#sms');
             exit;
         }
         
@@ -125,7 +125,7 @@ try {
         // Verificar se há números para enviar
         if (empty($telefones)) {
             $_SESSION['sms_error'] = "Nenhum número de telefone encontrado para envio.";
-            header('Location: admin.php#sms');
+            header('Location: /admin#sms');
             exit;
         }
         
@@ -147,7 +147,7 @@ try {
             $_SESSION['sms_error'] = "Erro ao enviar SMS. " . implode('; ', $sendResult['errors']);
         }
         
-        header('Location: admin.php#sms');
+        header('Location: /admin#sms');
         exit;
     }
 
@@ -165,14 +165,14 @@ try {
             
             if (!in_array($fileType, $allowedTypes)) {
                 $_SESSION['photo_error'] = "Tipo de arquivo não permitido. Use apenas JPEG, PNG, GIF ou WEBP.";
-                header('Location: admin.php#fotos');
+                header('Location: /admin#fotos');
                 exit;
             }
             
             // Validar tamanho (máximo 5MB)
             if ($_FILES['foto']['size'] > 5 * 1024 * 1024) {
                 $_SESSION['photo_error'] = "Arquivo muito grande. Tamanho máximo: 5MB.";
-                header('Location: admin.php#fotos');
+                header('Location: /admin#fotos');
                 exit;
             }
             
@@ -202,7 +202,7 @@ try {
             $_SESSION['photo_error'] = "Nenhuma foto foi selecionada ou ocorreu um erro no upload.";
         }
         
-        header('Location: admin.php#fotos');
+        header('Location: /admin#fotos');
         exit;
     }
     
@@ -215,7 +215,7 @@ try {
         $stmt->execute();
         
         $_SESSION['photo_success'] = "Foto aprovada com sucesso!";
-        header('Location: admin.php#fotos');
+        header('Location: /admin#fotos');
         exit;
     }
     
@@ -228,7 +228,7 @@ try {
         $stmt->execute();
         
         $_SESSION['photo_success'] = "Foto rejeitada.";
-        header('Location: admin.php#fotos');
+        header('Location: /admin#fotos');
         exit;
     }
     
@@ -258,7 +258,7 @@ try {
             $_SESSION['photo_success'] = "Foto deletada com sucesso!";
         }
         
-        header('Location: admin.php#fotos');
+        header('Location: /admin#fotos');
         exit;
     }
     
@@ -270,7 +270,7 @@ try {
         $stmt->bindValue(':id', $id_foto, SQLITE3_INTEGER);
         $stmt->execute();
         
-        header('Location: admin.php#fotos');
+        header('Location: /admin#fotos');
         exit;
     }
 
@@ -317,7 +317,7 @@ if (isset($_GET['edit_event'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Bar da Tomazia</title>
-    <link rel="icon" href="img/tomazia.png" type="image/png">
+    <link rel="icon" href="/img/tomazia.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -408,7 +408,7 @@ if (isset($_GET['edit_event'])) {
         <div class="tab-pane fade" id="produtos" role="tabpanel">
             <div class="form-section">
                 <div class="section-title"><?php echo $edit_product ? 'Editar Produto' : 'Novo Produto'; ?></div>
-                <form method="POST" action="admin.php#produtos">
+                <form method="POST" action="/admin#produtos">
                     <input type="hidden" name="form_type" value="produto">
                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                     <input type="hidden" name="id_produto" value="<?php echo $edit_product['id_produto'] ?? ''; ?>">
@@ -418,7 +418,7 @@ if (isset($_GET['edit_event'])) {
                         <div class="form-group col-md-4"><input type="text" class="form-control" name="tipo" placeholder="Tipo" value="<?php echo $edit_product['tipo'] ?? ''; ?>" required></div>
                     </div>
                     <button type="submit" class="btn btn-primary"><?php echo $edit_product ? 'Atualizar' : 'Adicionar'; ?></button>
-                    <?php if ($edit_product): ?><a href="admin.php#produtos" class="btn btn-outline-warning ml-2">Cancelar</a><?php endif; ?>
+                    <?php if ($edit_product): ?><a href="/admin#produtos" class="btn btn-outline-warning ml-2">Cancelar</a><?php endif; ?>
                 </form>
             </div>
             <div>
@@ -436,7 +436,7 @@ if (isset($_GET['edit_event'])) {
                             <td><?php echo htmlspecialchars($row['tipo']); ?></td>
                             <td>
                                 <a href="admin.php?edit_product=<?php echo $row['id_produto']; ?>#produtos" class="btn btn-sm btn-outline-warning">Editar</a>
-                                <form method="POST" style="display:inline;" action="admin.php#produtos" onsubmit="return confirm('Eliminar este produto?');">
+                                <form method="POST" style="display:inline;" action="/admin#produtos" onsubmit="return confirm('Eliminar este produto?');">
                                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                     <input type="hidden" name="id_produto" value="<?php echo $row['id_produto']; ?>">
                                     <button type="submit" name="delete_product" class="btn btn-sm btn-outline-danger">Eliminar</button>
@@ -452,7 +452,7 @@ if (isset($_GET['edit_event'])) {
         <div class="tab-pane fade" id="eventos" role="tabpanel">
             <div class="form-section">
                 <div class="section-title"><?php echo $edit_event ? 'Editar Evento' : 'Novo Evento'; ?></div>
-                <form method="POST" action="admin.php#eventos">
+                <form method="POST" action="/admin#eventos">
                     <input type="hidden" name="form_type" value="evento">
                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                     <input type="hidden" name="id_evento" value="<?php echo $edit_event['id'] ?? ''; ?>">
@@ -469,7 +469,7 @@ if (isset($_GET['edit_event'])) {
                         <label class="form-check-label" for="visivel">Visível na página principal</label>
                     </div>
                     <button type="submit" class="btn btn-primary"><?php echo $edit_event ? 'Atualizar' : 'Adicionar'; ?></button>
-                    <?php if ($edit_event): ?><a href="admin.php#eventos" class="btn btn-outline-warning ml-2">Cancelar</a><?php endif; ?>
+                    <?php if ($edit_event): ?><a href="/admin#eventos" class="btn btn-outline-warning ml-2">Cancelar</a><?php endif; ?>
                 </form>
             </div>
             <div>
@@ -503,14 +503,14 @@ if (isset($_GET['edit_event'])) {
                             </td>
                             <td>
                                 <a href="admin.php?edit_event=<?php echo $row['id']; ?>#eventos" class="btn btn-sm btn-outline-warning">Editar</a>
-                                <form method="POST" style="display:inline;" action="admin.php#eventos">
+                                <form method="POST" style="display:inline;" action="/admin#eventos">
                                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                     <input type="hidden" name="id_evento" value="<?php echo $row['id']; ?>">
                                     <button type="submit" name="toggle_event_visibility" class="btn btn-sm btn-outline-info">
                                         <?php echo $row['visivel'] == 1 ? 'Ocultar' : 'Mostrar'; ?>
                                     </button>
                                 </form>
-                                <form method="POST" style="display:inline;" action="admin.php#eventos" onsubmit="return confirm('Eliminar este evento?');">
+                                <form method="POST" style="display:inline;" action="/admin#eventos" onsubmit="return confirm('Eliminar este evento?');">
                                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                     <input type="hidden" name="id_evento" value="<?php echo $row['id']; ?>">
                                     <button type="submit" name="delete_event" class="btn btn-sm btn-outline-danger">Eliminar</button>
@@ -563,7 +563,7 @@ if (isset($_GET['edit_event'])) {
                     Atualmente, o sistema opera em modo de simulação.
                 </p>
                 
-                <form method="POST" action="admin.php#sms" id="smsForm">
+                <form method="POST" action="/admin#sms" id="smsForm">
                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                     
                     <div class="form-group">
@@ -651,7 +651,7 @@ if (isset($_GET['edit_event'])) {
                     <?php unset($_SESSION['photo_error']); ?>
                 <?php endif; ?>
                 
-                <form method="POST" action="admin.php#fotos" enctype="multipart/form-data">
+                <form method="POST" action="/admin#fotos" enctype="multipart/form-data">
                     <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                     
                     <div class="form-group">
@@ -681,7 +681,7 @@ if (isset($_GET['edit_event'])) {
                 
                 <!-- Filter -->
                 <div class="mb-3">
-                    <form method="GET" action="admin.php#fotos" class="form-inline">
+                    <form method="GET" action="/admin#fotos" class="form-inline">
                         <label for="filter_status" class="mr-2">Filtro:</label>
                         <select name="filter_status" id="filter_status" class="form-control form-control-sm mr-2" onchange="this.form.submit()">
                             <option value="todas" <?php echo (!isset($_GET['filter_status']) || $_GET['filter_status'] === 'todas') ? 'selected' : ''; ?>>Todas</option>
@@ -738,12 +738,12 @@ if (isset($_GET['edit_event'])) {
                                     ?>
                                 </p>
                                 <div class="btn-group btn-group-sm d-flex" role="group">
-                                    <form method="POST" style="flex: 1; display:inline;" action="admin.php#fotos">
+                                    <form method="POST" style="flex: 1; display:inline;" action="/admin#fotos">
                                         <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                         <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="approve_photo" class="btn btn-sm btn-success btn-block">✓ Aprovar</button>
                                     </form>
-                                    <form method="POST" style="flex: 1; display:inline;" action="admin.php#fotos" onsubmit="return confirm('Rejeitar esta foto?');">
+                                    <form method="POST" style="flex: 1; display:inline;" action="/admin#fotos" onsubmit="return confirm('Rejeitar esta foto?');">
                                         <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                         <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="reject_photo" class="btn btn-sm btn-danger btn-block">✗ Rejeitar</button>
@@ -799,14 +799,14 @@ if (isset($_GET['edit_event'])) {
                                     ?>
                                 </p>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <form method="POST" style="display:inline;" action="admin.php#fotos">
+                                    <form method="POST" style="display:inline;" action="/admin#fotos">
                                         <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                         <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="toggle_photo_visibility" class="btn btn-sm btn-outline-info">
                                             <?php echo $row['visivel'] == 1 ? 'Ocultar' : 'Mostrar'; ?>
                                         </button>
                                     </form>
-                                    <form method="POST" style="display:inline;" action="admin.php#fotos" onsubmit="return confirm('Deletar esta foto?');">
+                                    <form method="POST" style="display:inline;" action="/admin#fotos" onsubmit="return confirm('Deletar esta foto?');">
                                         <input type="hidden" name="<?php echo CSRF_TOKEN_NAME; ?>" value="<?php echo generateCsrfToken(); ?>">
                                         <input type="hidden" name="id_foto" value="<?php echo $row['id']; ?>">
                                         <button type="submit" name="delete_photo" class="btn btn-sm btn-outline-danger">Eliminar</button>

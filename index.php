@@ -29,10 +29,10 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bar da Tomazia</title>
-    <link rel="icon" href="img/tomazia.png" type="image/png">
+    <link rel="icon" href="/img/tomazia.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="/css/style.css"> 
     <style>
         body {
             position: relative;
@@ -183,12 +183,12 @@ try {
 </head>
 <body>
     <video class="video-background" autoplay loop muted playsinline>
-        <source src="img/3772392-hd_1920_1080_25fps.mp4" type="video/mp4">
+        <source src="/img/3772392-hd_1920_1080_25fps.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
     
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="index.php"><img src="img/tomazia.png" height="100"></a>
+        <a class="navbar-brand" href="/"><img src="/img/tomazia.png" height="100"></a>
     </nav>
 
     <div class="container">

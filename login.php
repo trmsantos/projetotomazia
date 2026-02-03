@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result && password_verify($password, $result['psw'])) {
             $_SESSION['loggedin'] = true;
-            header('Location: admin.php');
+            header('Location: /admin');
             exit;
         } else {
             $error = "Credenciais inválidas!";
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Bar da Tomazia</title>
-    <link rel="icon" href="img/tomazia.png" type="image/png">
+    <link rel="icon" href="/img/tomazia.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -58,11 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <video class="video-background" autoplay loop muted playsinline>
-        <source src="img/3772392-hd_1920_1080_25fps.mp4" type="video/mp4">
+        <source src="/img/3772392-hd_1920_1080_25fps.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="index.php"><img src="img/tomazia.png" alt="Tomazia"></a>
+        <a class="navbar-brand" href="index.php"><img src="/img/tomazia.png" alt="Tomazia"></a>
     </nav>
     <div class="container">
         <div class="form-container">
