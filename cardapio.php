@@ -40,43 +40,57 @@ try {
     <title>Cardápio - Bar da Tomazia</title>
     <link rel="icon" href="img/tomazia.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #5D1F3A;
             color: #f0f0f0;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .header-cardapio {
             background-color: #3D0F24;
-            padding: 2rem 1rem;
+            padding: 2.5rem 1rem;
             text-align: center;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         .header-cardapio h1 {
             color: #D4AF37;
             font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
+            font-size: 3.25rem;
+            font-weight: 900;
             margin: 0;
+            letter-spacing: -0.03em;
         }
         .header-cardapio a {
             position: absolute;
-            top: 2.5rem;
-            left: 1.5rem;
+            top: 2.75rem;
+            left: 1.75rem;
             color: #D4AF37;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .header-cardapio a:hover {
             color: #fff;
+            transform: translateX(-4px);
         }
         .category-nav-wrapper {
             background-color: #5D1F3A;
-            padding: 1rem 0;
+            padding: 1.25rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .category-nav {
             display: flex;
@@ -90,77 +104,93 @@ try {
         }
         .category-btn {
             background: transparent;
-            border: 1px solid rgba(212, 175, 55, 0.5);
+            border: 2px solid rgba(212, 175, 55, 0.4);
             color: #D4AF37;
-            padding: 0.6rem 1.2rem;
-            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 32px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 600;
             white-space: nowrap;
-            margin-right: 0.8rem;
+            margin-right: 1rem;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
         }
         .category-btn:hover, .category-btn.active {
             background: #D4AF37;
             color: #3D0F24;
             border-color: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
         .menu-section {
             display: none;
-            padding: 2rem 1rem;
-            animation: fadeIn 0.6s ease-in-out;
+            padding: 3rem 1rem;
+            animation: fadeIn 0.5s ease-in-out;
         }
         .menu-section.active {
             display: block;
         }
         .welcome-message {
             text-align: center;
-            padding: 4rem 1rem;
+            padding: 5rem 1rem;
         }
         .welcome-message h2 {
             font-family: 'Playfair Display', serif;
             color: #D4AF37;
+            font-size: 2.75rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .welcome-message p {
+            font-size: 1.25rem;
+            line-height: 1.7;
         }
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
         }
         .menu-item {
             background-color: #3D0F24;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            border-radius: 10px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         .menu-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.4), 0 4px 12px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.3);
         }
         .item-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding-bottom: 0.8rem;
-            margin-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
         }
         .item-name {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: #f0f0f0;
             font-weight: 700;
+            letter-spacing: -0.01em;
         }
         .item-price {
-            font-weight: 600;
-            font-size: 1.3rem;
+            font-weight: 700;
+            font-size: 1.375rem;
             color: #D4AF37;
             white-space: nowrap;
-            padding-left: 1rem;
+            padding-left: 1.25rem;
         }
         .item-description {
-            color: #a0a0a0;
-            font-size: 0.95rem;
+            color: #b0b0b0;
+            font-size: 1rem;
+            line-height: 1.7;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }

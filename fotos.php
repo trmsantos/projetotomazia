@@ -102,19 +102,24 @@ try {
     <title>Enviar Foto - Bar da Tomazia</title>
     <link rel="icon" href="img/pngico.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Montserrat', Arial, sans-serif;
+            font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: #5D1F3A;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             color: #f0f0f0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .navbar {
             background-color: rgba(93, 31, 58, 0.95) !important;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .navbar-brand img {
             display: block;
@@ -125,72 +130,110 @@ try {
             opacity: 0.7;
         }
         .main-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
+            max-width: 950px;
+            margin: 48px auto;
+            padding: 24px;
         }
         .upload-section, .photos-section {
             background-color: rgba(61, 15, 36, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         h1, h2 {
             color: #D4AF37;
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-weight: 900;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        h1 {
+            font-size: 2.75rem;
+        }
+        h2 {
+            font-size: 2.25rem;
         }
         .info-message {
-            background-color: rgba(212, 175, 55, 0.1);
+            background-color: rgba(212, 175, 55, 0.12);
             border-left: 4px solid #D4AF37;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
+            padding: 18px;
+            margin-top: 24px;
+            border-radius: 8px;
             color: #D4AF37;
+            font-weight: 500;
+            line-height: 1.6;
         }
         .form-control, .form-control-file {
             background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 2px solid rgba(212, 175, 55, 0.3);
             color: #f0f0f0;
+            border-radius: 10px;
+            padding: 14px 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
         }
         .form-control:focus, .form-control-file:focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-color: #D4AF37;
             color: #f0f0f0;
-            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+            outline: none;
         }
         .form-control::placeholder {
             color: rgba(240, 240, 240, 0.5);
         }
         .btn-primary {
             background-color: #D4AF37;
-            border-color: #D4AF37;
+            border: 2px solid #D4AF37;
             color: #3D0F24;
             font-weight: 600;
-            padding: 10px 30px;
+            padding: 14px 32px;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
         .btn-primary:hover {
             background-color: #C19B2E;
             border-color: #C19B2E;
             color: #3D0F24;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
         }
         .photo-card {
             background-color: rgba(93, 31, 58, 0.5);
             border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 10px;
+            border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .photo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.35);
         }
         .photo-card img {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .photo-card:hover img {
+            transform: scale(1.05);
         }
         .photo-card-body {
-            padding: 15px;
+            padding: 20px;
         }
         .badge-aprovado {
             background-color: #28a745;
@@ -205,9 +248,32 @@ try {
         label {
             color: #D4AF37;
             font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.01em;
+            margin-bottom: 10px;
         }
         small {
             color: rgba(240, 240, 240, 0.7);
+            line-height: 1.6;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .alert {
+            border-radius: 10px;
+            padding: 16px 20px;
+            border: none;
+            font-weight: 500;
+        }
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #5cb85c;
+            border-left: 4px solid #5cb85c;
+        }
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #f5c2c7;
+            border-left: 4px solid #dc3545;
         }
     </style>
 </head>
