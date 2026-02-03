@@ -5,6 +5,16 @@
  * Maintains backward compatibility with existing code
  */
 
+// Prevent direct access to this file
+if (!defined('APP_INITIALIZED') && php_sapi_name() !== 'cli') {
+    // Allow access if called from legacy pages or CLI
+    if (!isset($_SERVER['SCRIPT_FILENAME']) || 
+        basename($_SERVER['SCRIPT_FILENAME']) === 'config.php') {
+        http_response_code(403);
+        die('Direct access not permitted');
+    }
+}
+
 // Load environment variables if not already loaded
 if (!isset($_ENV['DB_PATH']) && file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
