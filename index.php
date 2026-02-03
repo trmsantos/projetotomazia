@@ -31,7 +31,7 @@ try {
     <title>Bar da Tomazia</title>
     <link rel="icon" href="img/tomazia.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css"> 
     <style>
         body {
@@ -39,7 +39,9 @@ try {
             min-height: 100vh;
             background-color: #5D1F3A;
             color: #f0f0f0;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .video-background {
             position: fixed;
@@ -62,44 +64,80 @@ try {
         .navbar {
             background-color: rgba(93, 31, 58, 0.95) !important;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
         .form-container {
-            max-width: 450px;
+            max-width: 480px;
             margin: 5% auto;
             background-color: rgba(61, 15, 36, 0.95);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            padding: 48px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .form-container h2 {
             color: #D4AF37;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 36px;
             font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
         }
         .form-control {
             background-color: rgba(93,31,58,0.3);
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.3);
             color: #f0f0f0;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .form-control:focus {
             background-color: rgba(93,31,58,0.5);
             border-color: #D4AF37;
             color: #ffffff;
-            box-shadow: none;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+            outline: none;
+        }
+        .form-control:hover:not(:focus) {
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.01em;
+            margin-bottom: 10px;
         }
         .btn-primary {
             background-color: #D4AF37;
-            border-color: #D4AF37;
+            border: 2px solid #D4AF37;
             color: #3D0F24;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            padding: 14px 32px;
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
         .btn-primary:hover {
             background-color: transparent;
             border-color: #D4AF37;
             color: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
         }
         .form-check-label a {
             color: #D4AF37;
@@ -112,9 +150,12 @@ try {
             background-color: #3D0F24;
             color: #f0f0f0;
             border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
         }
         .modal-header {
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 1.5rem 1.75rem;
         }
         .modal-header .close {
             color: #f0f0f0;
@@ -123,6 +164,20 @@ try {
         .modal-title {
             color: #D4AF37;
             font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .modal-body {
+            padding: 1.75rem;
+            line-height: 1.7;
+        }
+        .modal-body h6 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .modal-footer {
+            padding: 1.25rem 1.75rem;
         }
     </style>
 </head>

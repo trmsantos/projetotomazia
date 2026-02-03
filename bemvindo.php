@@ -17,14 +17,16 @@ $nome = $_SESSION['nome'];
     <title>Bar da Tomazia</title>
     <link rel="icon" href="img/tomazia.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
             overflow-x: hidden;
             background-color: #5D1F3A;
             color: #f0f0f0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .hero-section {
@@ -65,64 +67,91 @@ $nome = $_SESSION['nome'];
             right: 20px;
             z-index: 1000;
             background: rgba(61, 15, 36, 0.95);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 16px;
             border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .nav-menu a {
             display: block;
             color: #f0f0f0;
             text-decoration: none;
-            padding: 10px 20px;
-            margin: 5px 0;
-            border-radius: 5px;
-            transition: background 0.3s, color 0.3s;
-            font-weight: bold;
+            padding: 12px 24px;
+            margin: 6px 0;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.01em;
         }
 
         .nav-menu a:hover {
             background: #D4AF37;
             color: #3D0F24;
+            transform: translateX(-4px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
         
         .hero-content h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.7);
+            letter-spacing: -0.03em;
         }
 
         .hero-content p {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-family: 'Inter', 'Montserrat', sans-serif;
+            font-size: 1.625rem;
+            margin-bottom: 36px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.6;
         }
 
         .btn-custom {
             background-color: #D4AF37;
             color: #3D0F24;
             border: 2px solid #D4AF37;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            transition: all 0.3s;
+            padding: 16px 36px;
+            font-size: 1.25rem;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 600;
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-custom:hover {
             background-color: transparent;
             color: #D4AF37;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            text-decoration: none;
+        }
+
+        .btn-custom:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 12px rgba(212, 175, 55, 0.3);
         }
         
-        section { padding: 80px 20px; }
+        section { 
+            padding: 100px 20px; 
+        }
         section h2 {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-size: 3rem;
+            margin-bottom: 48px;
             font-family: 'Playfair Display', serif;
             color: #D4AF37;
+            font-weight: 900;
+            letter-spacing: -0.03em;
         }
         
         .wifi-section { background-color: #5D1F3A; }
@@ -133,13 +162,17 @@ $nome = $_SESSION['nome'];
             background: #3D0F24;
             color: #f0f0f0;
             border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         
         .event-card {
             position: relative;
             overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .event-card::before {
             content: '';
@@ -149,36 +182,40 @@ $nome = $_SESSION['nome'];
             width: 5px;
             height: 100%;
             background: linear-gradient(180deg, #D4AF37, #FFD700);
+            border-radius: 16px 0 0 16px;
         }
         .event-card h3 { 
             color: #D4AF37; 
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
+            font-size: 1.625rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
         }
         .event-card .event-date { 
             color: #FFD700; 
             font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-size: 1.0625rem;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .event-card .event-description {
             color: #e0e0e0;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 1rem;
         }
         .event-icon {
-            width: 50px;
-            height: 50px;
+            width: 56px;
+            height: 56px;
             background: linear-gradient(135deg, #D4AF37, #FFD700);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.625rem;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
         .btn-copy-icon {
@@ -223,8 +260,14 @@ $nome = $_SESSION['nome'];
         .hamburger-menu.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
+            .hero-content h1 { 
+                font-size: 2.75rem; 
+                margin-bottom: 20px;
+            }
+            .hero-content p { 
+                font-size: 1.375rem;
+                margin-bottom: 28px;
+            }
             .hamburger-menu { display: block; }
             .nav-menu {
                 top: 0;
@@ -274,7 +317,7 @@ $nome = $_SESSION['nome'];
             <h2>WiFi Gratuito</h2>
             <div class="wifi-card text-center p-4" style="max-width: 400px; margin: 0 auto;">
                 <p>Clique na imagem para mostrar os dados WI-FI:</p>
-                <img src="img/wifi.png" alt="WiFi" onclick="toggleWiFi()" style="width: 150px; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="img/wifi.png" alt="WiFi" onclick="toggleWiFi()" style="width: 160px; cursor: pointer; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="wifi-info" id="wifiInfo" style="display: none; margin-top: 20px;">
                     <p style="text-align: left; background-color: #D4AF37; color: #1a1a1a; padding: 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;"><strong>Rede:</strong> <?php echo htmlspecialchars(WIFI_REDE); ?></p>
                     <div style="display: flex; align-items: center; justify-content: space-between; background-color: #D4AF37; color: #1a1a1a; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-weight: 600;">
@@ -367,7 +410,7 @@ $nome = $_SESSION['nome'];
                     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
                         $hasEvents = true;
                         echo '<div class="col-md-6 col-lg-4 mb-4">';
-                        echo '<div class="event-card p-4 h-100" style="transition: all 0.3s; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);" onmouseover="this.style.transform=\'translateY(-8px)\'; this.style.boxShadow=\'0 8px 25px rgba(212, 175, 55, 0.5)\';" onmouseout="this.style.transform=\'translateY(0)\'; this.style.boxShadow=\'0 4px 15px rgba(212, 175, 55, 0.3)\';">';
+                        echo '<div class="event-card p-4 h-100" style="transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);" onmouseover="this.style.transform=\'translateY(-10px)\'; this.style.boxShadow=\'0 12px 32px rgba(212, 175, 55, 0.5)\';" onmouseout="this.style.transform=\'translateY(0)\'; this.style.boxShadow=\'0 8px 24px rgba(212, 175, 55, 0.3)\';">';
                         echo '<div class="event-icon">🎊</div>';
                         echo '<h3>' . htmlspecialchars($row['nome_evento']) . '</h3>';
                         if (!empty($row['data_evento'])) {
