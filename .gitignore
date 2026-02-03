@@ -25,6 +25,7 @@ config.local.php
 *.key
 *.pem
 *.cert
+.env
 
 # Node modules (if using npm)
 node_modules/
