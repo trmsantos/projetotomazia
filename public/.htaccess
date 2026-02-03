@@ -1,0 +1,15 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Allow access to static files directly (CSS, JS, images)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Allow access to directories
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Route all other requests to index.php
+# QSA = Query String Append - preserves query string parameters
+# L = Last - stops processing further rules
+RewriteRule ^(.*)$ index.php [QSA,L]

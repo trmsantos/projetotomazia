@@ -1,0 +1,18 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Set the base directory (adjust if application is not in document root)
+RewriteBase /
+
+# Redirect all requests to the public directory if not already there
+# This is for when the application root is the document root
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Handle all requests through the front controller (public/index.php)
+# But allow direct access to existing files and directories (CSS, JS, images)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.php [QSA,L]
