@@ -43,7 +43,7 @@ Options -Indexes
 </Files>
 
 # Protect config files
-<FilesMatch "(config|\.lock|composer\.(json|lock))$">
+<FilesMatch "^(config\.php|\.env)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
