@@ -1,28 +1,45 @@
 <?php
 
-define('DB_PATH', __DIR__ . '/bd/bd_teste.db');
+/**
+ * Legacy configuration file - Updated to use environment variables
+ * Maintains backward compatibility with existing code
+ */
 
-define('WIFI_REDE', 'NOS-2B6E-5');
-define('WIFI_PASSWORD', '5YV4UJC4');
+// Prevent direct access to this file
+if (!defined('APP_INITIALIZED') && php_sapi_name() !== 'cli') {
+    // Allow access if called from legacy pages or CLI
+    if (!isset($_SERVER['SCRIPT_FILENAME']) || 
+        basename($_SERVER['SCRIPT_FILENAME']) === 'config.php') {
+        http_response_code(403);
+        die('Direct access not permitted');
+    }
+}
 
-define('CSRF_TOKEN_NAME', 'csrf_token');
+// Load environment variables if not already loaded
+if (!isset($_ENV['DB_PATH']) && file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->safeLoad();
+}
 
-// SMS API Configuration
-// Para usar Twilio, configure estas variáveis de ambiente ou descomente e preencha:
-// define('SMS_API_ENABLED', getenv('SMS_API_ENABLED') ?: false);
-// define('SMS_API_KEY', getenv('SMS_API_KEY') ?: '');
-// define('SMS_API_SECRET', getenv('SMS_API_SECRET') ?: '');
-// define('SMS_API_FROM', getenv('SMS_API_FROM') ?: '');
-// define('SMS_API_ENDPOINT', getenv('SMS_API_ENDPOINT') ?: 'https://api.example.com/sms');
+// Database configuration - use environment or fallback to default
+define('DB_PATH', $_ENV['DB_PATH'] ?? __DIR__ . '/bd/bd_teste.db');
 
-// Para teste, deixar SMS_API_ENABLED como false para modo de simulação
-define('SMS_API_ENABLED', false);
-define('SMS_API_KEY', '');
-define('SMS_API_SECRET', '');
-define('SMS_API_FROM', '');
-define('SMS_API_ENDPOINT', 'https://api.example.com/sms');
-define('SMS_API_COUNTRY_CODE', '+351'); // Código do país para Portugal
-define('SMS_API_TIMEOUT', 30); // Timeout em segundos para requisições HTTP
+// WiFi credentials - use environment or fallback to default
+define('WIFI_REDE', $_ENV['WIFI_REDE'] ?? 'NOS-2B6E-5');
+define('WIFI_PASSWORD', $_ENV['WIFI_PASSWORD'] ?? '5YV4UJC4');
+
+// Security configuration
+define('CSRF_TOKEN_NAME', $_ENV['CSRF_TOKEN_NAME'] ?? 'csrf_token');
+
+// SMS API Configuration - use environment variables
+define('SMS_API_ENABLED', ($_ENV['SMS_API_ENABLED'] ?? 'false') === 'true');
+define('SMS_API_KEY', $_ENV['SMS_API_KEY'] ?? '');
+define('SMS_API_SECRET', $_ENV['SMS_API_SECRET'] ?? '');
+define('SMS_API_FROM', $_ENV['SMS_API_FROM'] ?? '');
+define('SMS_API_ENDPOINT', $_ENV['SMS_API_ENDPOINT'] ?? 'https://api.example.com/sms');
+define('SMS_API_COUNTRY_CODE', $_ENV['SMS_API_COUNTRY_CODE'] ?? '+351');
+define('SMS_API_TIMEOUT', (int)($_ENV['SMS_API_TIMEOUT'] ?? 30));
 
 /**
  * Função para obter conexão com a base de dados
@@ -43,8 +60,14 @@ function getDbConnection() {
 /**
  * Gerar token CSRF
  * @return string
+ * @deprecated Use App\Helpers\SecurityHelper::generateCsrfToken() instead
  */
 function generateCsrfToken() {
+    if (class_exists('App\Helpers\SecurityHelper')) {
+        return App\Helpers\SecurityHelper::generateCsrfToken();
+    }
+    
+    // Fallback implementation
     if (!isset($_SESSION[CSRF_TOKEN_NAME])) {
         $_SESSION[CSRF_TOKEN_NAME] = bin2hex(random_bytes(32));
     }
@@ -55,8 +78,14 @@ function generateCsrfToken() {
  * Verificar token CSRF
  * @param string $token
  * @return bool
+ * @deprecated Use App\Helpers\SecurityHelper::verifyCsrfToken() instead
  */
 function verifyCsrfToken($token) {
+    if (class_exists('App\Helpers\SecurityHelper')) {
+        return App\Helpers\SecurityHelper::verifyCsrfToken($token);
+    }
+    
+    // Fallback implementation
     return isset($_SESSION[CSRF_TOKEN_NAME]) && hash_equals($_SESSION[CSRF_TOKEN_NAME], $token);
 }
 
@@ -65,14 +94,22 @@ function verifyCsrfToken($token) {
  * @param string $name
  * @param string $value
  * @param int $expire
+ * @deprecated Use App\Helpers\SecurityHelper::setSecureCookie() instead
  */
 function setSecureCookie($name, $value, $expire = 0) {
+    if (class_exists('App\Helpers\SecurityHelper')) {
+        App\Helpers\SecurityHelper::setSecureCookie($name, $value, $expire);
+        return;
+    }
+    
+    // Fallback implementation
+    $secure = ($_ENV['SECURE_COOKIES'] ?? 'false') === 'true';
     $options = [
         'expires' => $expire,
         'path' => '/',
-        'secure' => true,      
-        'httponly' => true,    
-        'samesite' => 'Strict' 
+        'secure' => $secure,
+        'httponly' => true,
+        'samesite' => 'Strict'
     ];
     setcookie($name, $value, $options);
 }
