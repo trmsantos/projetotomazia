@@ -97,42 +97,46 @@ $router->get('/produto/{id}', [$productController, 'show']);
 // Example of admin dashboard with parameter
 $router->get('/admin/dashboard', function($params) {
     // This shows how nested static routes work
-    echo '<!DOCTYPE html>';
-    echo '<html lang="pt">';
-    echo '<head>';
-    echo '<meta charset="UTF-8">';
-    echo '<title>Admin Dashboard - Bar da Tomazia</title>';
-    echo '</head>';
-    echo '<body style="background-color: #5D1F3A; color: #f0f0f0; padding: 20px; font-family: Arial, sans-serif;">';
-    echo '<h1 style="color: #D4AF37;">Admin Dashboard</h1>';
-    echo '<p>Esta é uma rota estática aninhada de exemplo.</p>';
-    echo '<p><a href="/admin" style="color: #D4AF37;">Ir para Admin</a></p>';
-    echo '</body>';
-    echo '</html>';
+    ?>
+    <!DOCTYPE html>
+    <html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Dashboard - Bar da Tomazia</title>
+    </head>
+    <body style="background-color: #5D1F3A; color: #f0f0f0; padding: 20px; font-family: Arial, sans-serif;">
+        <h1 style="color: #D4AF37;">Admin Dashboard</h1>
+        <p>Esta é uma rota estática aninhada de exemplo.</p>
+        <p><a href="/admin" style="color: #D4AF37;">Ir para Admin</a></p>
+    </body>
+    </html>
+    <?php
 });
 
 // Set custom 404 handler (optional)
 $router->setNotFoundHandler(function() {
     http_response_code(404);
-    echo '<!DOCTYPE html>';
-    echo '<html lang="pt">';
-    echo '<head>';
-    echo '<meta charset="UTF-8">';
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
-    echo '<title>404 - Página Não Encontrada</title>';
-    echo '<link rel="stylesheet" href="/css/style.css">';
-    echo '<style>';
-    echo 'body { background-color: #5D1F3A; color: #f0f0f0; font-family: Arial, sans-serif; text-align: center; padding: 50px; }';
-    echo 'h1 { font-size: 72px; margin: 0; color: #D4AF37; }';
-    echo 'p { font-size: 20px; }';
-    echo 'a { color: #D4AF37; text-decoration: none; }';
-    echo 'a:hover { text-decoration: underline; }';
-    echo '</style>';
-    echo '</head>';
-    echo '<body>';
-    echo '<h1>404</h1>';
-    echo '<p>Desculpe, a página que procura não foi encontrada.</p>';
-    echo '<a href="/">Voltar para a página inicial</a>';
-    echo '</body>';
-    echo '</html>';
+    ?>
+    <!DOCTYPE html>
+    <html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>404 - Página Não Encontrada</title>
+        <link rel="stylesheet" href="/css/style.css">
+        <style>
+            body { background-color: #5D1F3A; color: #f0f0f0; font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+            h1 { font-size: 72px; margin: 0; color: #D4AF37; }
+            p { font-size: 20px; }
+            a { color: #D4AF37; text-decoration: none; }
+            a:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <h1>404</h1>
+        <p>Desculpe, a página que procura não foi encontrada.</p>
+        <a href="/">Voltar para a página inicial</a>
+    </body>
+    </html>
+    <?php
 });
