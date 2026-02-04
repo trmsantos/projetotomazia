@@ -22,8 +22,11 @@ class Logger
 {
     /**
      * Base directory for log files
+     * 
+     * Defaults to storage/logs for new installations,
+     * but can be changed via setLogPath() for backward compatibility.
      */
-    private static string $logPath = __DIR__ . '/../../logs';
+    private static string $logPath = __DIR__ . '/../../storage/logs';
 
     /**
      * Available log channels and their corresponding files
@@ -94,12 +97,17 @@ class Logger
      * 
      * Only logs when APP_DEBUG is enabled.
      * 
+     * Note: Uses $_ENV directly for debug check to avoid circular dependency
+     * with Config class during early initialization.
+     * 
      * @param string $message Log message
      * @param array $context Additional context data
      */
     public static function debug(string $message, array $context = []): void
     {
-        if (($_ENV['APP_DEBUG'] ?? 'false') === 'true') {
+        // Check debug mode - use $_ENV to avoid circular dependency with Config
+        $debug = $_ENV['APP_DEBUG'] ?? getenv('APP_DEBUG');
+        if ($debug === 'true' || $debug === true) {
             self::log('DEBUG', $message, $context, 'app');
         }
     }

@@ -111,7 +111,7 @@ return [
      */
     'logging' => [
         'default' => 'app',
-        'path' => env('LOG_PATH', __DIR__ . '/../logs'),
+        'path' => env('LOG_PATH', __DIR__ . '/../storage/logs'),
         'channels' => [
             'app' => 'app.log',
             'error' => 'error.log',

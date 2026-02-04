@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Core\Config;
 use App\Helpers\Logger;
 
 /**
@@ -12,11 +13,11 @@ use App\Helpers\Logger;
  * - Message validation
  * - API integration
  * 
- * SMS Configuration is read from environment variables:
- * - SMS_API_ENABLED: Enable/disable SMS sending
- * - SMS_API_KEY: API authentication key
- * - SMS_API_ENDPOINT: API endpoint URL
- * - SMS_API_COUNTRY_CODE: Default country code for phone numbers
+ * SMS Configuration is read from config/app.php (sms section):
+ * - sms.enabled: Enable/disable SMS sending
+ * - sms.api_key: API authentication key
+ * - sms.endpoint: API endpoint URL
+ * - sms.country_code: Default country code for phone numbers
  * 
  * @package App\Services
  */
@@ -52,8 +53,8 @@ class SmsService
             ];
         }
 
-        // Check if API is enabled
-        $enabled = ($_ENV['SMS_API_ENABLED'] ?? 'false') === 'true';
+        // Check if API is enabled using Config class
+        $enabled = Config::get('app.sms.enabled', false);
         
         if (!$enabled) {
             Logger::info("SMS API in simulation mode", [
@@ -69,9 +70,9 @@ class SmsService
             ];
         }
 
-        // Validate API configuration
-        $apiKey = $_ENV['SMS_API_KEY'] ?? '';
-        $endpoint = $_ENV['SMS_API_ENDPOINT'] ?? '';
+        // Validate API configuration using Config class
+        $apiKey = Config::get('app.sms.api_key', '');
+        $endpoint = Config::get('app.sms.endpoint', '');
 
         if (empty($apiKey) || empty($endpoint)) {
             Logger::error("SMS API configuration incomplete");
@@ -130,11 +131,12 @@ class SmsService
             'errors' => []
         ];
 
-        $countryCode = $_ENV['SMS_API_COUNTRY_CODE'] ?? '+351';
-        $from = $_ENV['SMS_API_FROM'] ?? '';
-        $endpoint = $_ENV['SMS_API_ENDPOINT'] ?? '';
-        $apiKey = $_ENV['SMS_API_KEY'] ?? '';
-        $timeout = (int)($_ENV['SMS_API_TIMEOUT'] ?? 30);
+        // Get SMS configuration from Config class
+        $countryCode = Config::get('app.sms.country_code', '+351');
+        $from = Config::get('app.sms.from', '');
+        $endpoint = Config::get('app.sms.endpoint', '');
+        $apiKey = Config::get('app.sms.api_key', '');
+        $timeout = (int) Config::get('app.sms.timeout', 30);
 
         foreach ($phoneNumbers as $phone) {
             try {
