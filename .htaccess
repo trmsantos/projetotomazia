@@ -70,6 +70,7 @@ Options -Indexes
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     
     # Permissions Policy (formerly Feature Policy)
+    # Note: geolocation is disabled but can be enabled if needed for location features
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
     
     # Remove X-Powered-By header for security

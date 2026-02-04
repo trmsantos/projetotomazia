@@ -491,17 +491,20 @@ $nome = $_SESSION['nome'];
                 if (count($fotos) > 0):
             ?>
             <div class="slideshow-container">
-                <div id="photoCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="4000" data-pause="hover">
+                <div id="photoCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="4000" data-pause="hover" aria-label="Galeria de fotos do Bar da Tomazia">
                     <ol class="carousel-indicators custom-indicators">
                         <?php for ($i = 0; $i < count($fotos); $i++): ?>
-                            <li data-target="#photoCarousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $i === 0 ? 'active' : ''; ?>"></li>
+                            <li data-target="#photoCarousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $i === 0 ? 'active' : ''; ?>" aria-label="Ir para foto <?php echo ($i + 1); ?>"></li>
                         <?php endfor; ?>
                     </ol>
                     <div class="carousel-inner">
                         <?php foreach ($fotos as $index => $foto): ?>
                             <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
                                 <div class="carousel-img-wrapper">
-                                    <img src="<?php echo htmlspecialchars($foto['caminho']); ?>" class="d-block w-100" alt="<?php echo htmlspecialchars($foto['nome_foto']); ?>" loading="lazy">
+                                    <?php 
+                                    $altText = !empty($foto['descricao']) ? $foto['descricao'] : $foto['nome_foto'];
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($foto['caminho']); ?>" class="d-block w-100" alt="<?php echo htmlspecialchars($altText); ?>" loading="lazy">
                                 </div>
                                 <?php if (!empty($foto['descricao'])): ?>
                                     <div class="carousel-caption custom-caption">
