@@ -3,7 +3,27 @@
 namespace App\Core;
 
 /**
- * Router - Handles URL routing with support for dynamic parameters
+ * Router - URL routing with support for dynamic parameters
+ * 
+ * This router implements a simple but powerful routing system that:
+ * - Supports clean URLs without .php extensions
+ * - Handles GET and POST HTTP methods
+ * - Supports dynamic URL parameters like /product/{id}
+ * - Provides named routes for URL generation
+ * - Falls back to legacy PHP files for backward compatibility
+ * 
+ * Usage:
+ *   $router = new Router();
+ *   $router->get('/', 'HomeController@index', 'home');
+ *   $router->get('/product/{id}', 'ProductController@show');
+ *   $router->post('/login', 'AuthController@login');
+ *   $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+ * 
+ * Route handlers can be:
+ * - Closures: function($params) { ... }
+ * - Controller strings: 'ControllerName@methodName'
+ * 
+ * @package App\Core
  */
 class Router
 {
