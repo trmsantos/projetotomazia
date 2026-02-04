@@ -259,6 +259,129 @@ $nome = $_SESSION['nome'];
         .hamburger-menu.open span:nth-child(2) { opacity: 0; }
         .hamburger-menu.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
+        /* Slideshow Styles */
+        .slideshow-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .carousel-fade .carousel-item {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        
+        .carousel-fade .carousel-item.active {
+            opacity: 1;
+        }
+        
+        .carousel-inner {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+            background: #000;
+        }
+        
+        .carousel-img-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 66.67%; /* 3:2 aspect ratio */
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+        }
+        
+        .carousel-img-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .carousel-item:hover .carousel-img-wrapper img {
+            transform: scale(1.02);
+        }
+        
+        .custom-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(61, 15, 36, 0.95), transparent);
+            padding: 30px 20px 20px;
+            text-align: center;
+        }
+        
+        .caption-text {
+            color: #f0f0f0;
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin: 0;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+            line-height: 1.5;
+        }
+        
+        .custom-indicators {
+            bottom: -40px;
+        }
+        
+        .custom-indicators li {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(212, 175, 55, 0.4);
+            border: 2px solid rgba(212, 175, 55, 0.6);
+            transition: all 0.3s ease;
+        }
+        
+        .custom-indicators li.active {
+            background-color: #D4AF37;
+            border-color: #D4AF37;
+            transform: scale(1.3);
+        }
+        
+        .custom-control {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(61, 15, 36, 0.9);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .custom-control:hover {
+            background: rgba(212, 175, 55, 0.95);
+            border-color: #D4AF37;
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .custom-control .carousel-control-prev-icon,
+        .custom-control .carousel-control-next-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .photo-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(61, 15, 36, 0.9);
+            color: #D4AF37;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
         @media (max-width: 768px) {
             .hero-content h1 { 
                 font-size: 2.75rem; 
@@ -282,6 +405,26 @@ $nome = $_SESSION['nome'];
                 backdrop-filter: blur(5px);
             }
             .nav-menu.open { transform: translateX(0); }
+            
+            .custom-control {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .custom-control .carousel-control-prev-icon,
+            .custom-control .carousel-control-next-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .caption-text {
+                font-size: 0.95rem;
+            }
+            
+            .photo-counter {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
         }
     </style>
 </head>
@@ -347,36 +490,44 @@ $nome = $_SESSION['nome'];
                 
                 if (count($fotos) > 0):
             ?>
-            <div id="photoCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
-                <ol class="carousel-indicators">
-                    <?php for ($i = 0; $i < count($fotos); $i++): ?>
-                        <li data-target="#photoCarousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $i === 0 ? 'active' : ''; ?>"></li>
-                    <?php endfor; ?>
-                </ol>
-                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);">
-                    <?php foreach ($fotos as $index => $foto): ?>
-                        <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                            <img src="<?php echo htmlspecialchars($foto['caminho']); ?>" class="d-block w-100" alt="<?php echo htmlspecialchars($foto['nome_foto']); ?>" style="max-height: 500px; object-fit: contain; background: #000;">
-                            <?php if (!empty($foto['descricao'])): ?>
-                                <div class="carousel-caption d-none d-md-block" style="background: rgba(61, 15, 36, 0.8); border-radius: 10px; padding: 10px;">
-                                    <p><?php echo htmlspecialchars($foto['descricao']); ?></p>
+            <div class="slideshow-container">
+                <div id="photoCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="4000" data-pause="hover">
+                    <ol class="carousel-indicators custom-indicators">
+                        <?php for ($i = 0; $i < count($fotos); $i++): ?>
+                            <li data-target="#photoCarousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $i === 0 ? 'active' : ''; ?>"></li>
+                        <?php endfor; ?>
+                    </ol>
+                    <div class="carousel-inner">
+                        <?php foreach ($fotos as $index => $foto): ?>
+                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <div class="carousel-img-wrapper">
+                                    <img src="<?php echo htmlspecialchars($foto['caminho']); ?>" class="d-block w-100" alt="<?php echo htmlspecialchars($foto['nome_foto']); ?>" loading="lazy">
                                 </div>
-                            <?php endif; ?>
-                        </div>
-                    <?php endforeach; ?>
+                                <?php if (!empty($foto['descricao'])): ?>
+                                    <div class="carousel-caption custom-caption">
+                                        <p class="caption-text"><?php echo htmlspecialchars($foto['descricao']); ?></p>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="photo-counter">
+                                    <?php echo ($index + 1) . ' / ' . count($fotos); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <a class="carousel-control-prev custom-control" href="#photoCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="carousel-control-next custom-control" href="#photoCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Próxima</span>
+                    </a>
                 </div>
-                <a class="carousel-control-prev" href="#photoCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Anterior</span>
-                </a>
-                <a class="carousel-control-next" href="#photoCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Próxima</span>
-                </a>
             </div>
             <?php else: ?>
                 <div class="text-center">
                     <p class="lead" style="color: #a0a0a0;">Ainda não há fotos na galeria.</p>
+                    <p style="color: #888;">Adicione fotos através do painel administrativo.</p>
                 </div>
             <?php endif;
             } catch (Exception $e) {

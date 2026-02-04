@@ -1,205 +1,196 @@
-# Bar da Tomazia - Web Application
+# Bar da Tomazia - Aplicação Web
 
-A modern, secure web application for Bar da Tomazia featuring digital menu, event management, and customer engagement.
+Aplicação web moderna e segura para o Bar da Tomazia com menu digital, gestão de eventos e envolvimento com clientes.
 
-## 🎯 Features
+## 🎯 Funcionalidades Principais
 
-### Customer Features
-- **Digital Menu**: Browse cocktails, snacks, and beverages organized by category
-- **WiFi Access**: Easy access to venue WiFi credentials
-- **Events Calendar**: View upcoming events at the bar
-- **Location Map**: Find Bar da Tomazia with integrated Google Maps
-- **Photo Sharing**: Share moments from the bar
+### Para Clientes
+- **Menu Digital**: Navegue por cocktails, petiscos e bebidas organizados por categoria
+- **Acesso WiFi**: Acesso fácil às credenciais WiFi do estabelecimento
+- **Calendário de Eventos**: Veja os próximos eventos no bar
+- **Mapa de Localização**: Encontre o Bar da Tomazia com Google Maps integrado
+- **Galeria de Fotos**: Slideshow automático com fotos do bar
 
-### Admin Features
-- **Product Management**: Full CRUD operations for menu items
-- **Event Management**: Create, edit, and manage bar events
-- **Analytics Dashboard**: Track customer engagement and adherence
-- **Secure Authentication**: Password-protected admin panel
+### Para Administradores
+- **Gestão de Produtos**: Operações CRUD completas para itens do menu
+- **Gestão de Eventos**: Criar, editar e gerir eventos do bar
+- **Dashboard de Analytics**: Acompanhe o envolvimento dos clientes
+- **Autenticação Segura**: Painel administrativo protegido por password
 
-## 🔒 Security Features
+## 📋 Requisitos
 
-- **CSRF Protection**: All forms protected with CSRF tokens
-- **XSS Prevention**: All user inputs sanitized with htmlspecialchars()
-- **SQL Injection Prevention**: Parameterized queries throughout
-- **Secure Cookies**: HTTPOnly, Secure, and SameSite attributes
-- **Password Hashing**: BCrypt hashing for admin passwords
-- **Session Management**: Secure session handling
+- PHP 7.4 ou superior
+- Extensão SQLite3
+- Servidor web (Apache, Nginx, ou servidor integrado do PHP)
+- HTTPS (recomendado para produção)
 
-## 📋 Requirements
+## 🚀 Início Rápido
 
-- PHP 7.4 or higher
-- SQLite3 extension
-- Web server (Apache, Nginx, or PHP built-in server)
-- HTTPS (recommended for production)
+### Instalação Local
 
-## 🚀 Installation
-
-1. Clone the repository:
 ```bash
+# Clone o repositório
 git clone https://github.com/trmsantos/projetotomazia.git
 cd projetotomazia
-```
 
-2. Verify PHP and SQLite are installed:
-```bash
-php --version
-php -m | grep sqlite3
-```
-
-3. Configure the database:
-   - The database is already included in `bd/bd_teste.db`
-   - Update WiFi credentials in `config.php` if needed
-
-4. Start the development server:
-```bash
+# Inicie o servidor de desenvolvimento
 php -S localhost:8000
+
+# Acesse a aplicação
+# Frontend: http://localhost:8000/index.php
+# Admin: http://localhost:8000/login.php
 ```
 
-5. Access the application:
-   - Customer Interface: http://localhost:8000/index.php
-   - Admin Panel: http://localhost:8000/login.php
+### Instalação no cPanel
 
-## 📁 Project Structure
+Consulte o [Guia de Instalação Completo](GUIA_INSTALACAO.md) para instruções detalhadas sobre:
+- Instalação local (XAMPP, WAMP, MAMP)
+- Deployment no cPanel
+- Configuração de SSL
+- Configuração de domínio
+
+## 📁 Ficheiros Essenciais
 
 ```
 projetotomazia/
-├── admin.php           # Admin dashboard with CRUD operations
-├── bemvindo.php        # Welcome page with navigation
-├── cardapio.php        # Digital menu
-├── config.php          # Centralized configuration
-├── form.php            # Customer registration handler
-├── fotos.php           # Photo sharing page
-├── index.php           # Landing page
-├── login.php           # Admin authentication
+├── index.php           # Página inicial com registo
+├── bemvindo.php        # Página de boas-vindas (após login)
+├── cardapio.php        # Menu digital
+├── admin.php           # Painel administrativo
+├── login.php           # Login do admin
+├── config.php          # Configurações centralizadas
+├── form.php            # Processa registo de clientes
+├── fotos.php           # Galeria de fotos
+├── erro.php            # Página de erro
+├── termos.php          # Termos e condições
+├── criaradmin.php      # Criação de conta admin (usar uma vez)
+├── .htaccess           # Configurações Apache e segurança
 ├── bd/
-│   └── bd_teste.db     # SQLite database
+│   └── bd_teste.db     # Base de dados SQLite
 ├── css/
-│   └── style.css       # Global styles
-└── img/                # Images and assets
+│   └── style.css       # Estilos globais
+├── img/                # Imagens e recursos
+└── logs/               # Logs de erro
 ```
 
-## 🗄️ Database Schema
+## 🗺️ Rotas Principais
 
-### Tables
+| Rota | Descrição |
+|------|-----------|
+| `/index.php` | Página inicial com formulário de registo |
+| `/bemvindo.php` | Boas-vindas com slideshow, WiFi, eventos |
+| `/cardapio.php` | Menu completo do bar |
+| `/fotos.php` | Galeria de fotos |
+| `/login.php` | Login administrativo |
+| `/admin.php` | Painel de gestão |
 
-**produtos** (Menu Items)
-- id_produto (INTEGER, PRIMARY KEY)
-- nome_prod (TEXT)
-- preco (NUMERIC)
-- tipo (VARCHAR)
+## ⚙️ Configuração
 
-**eventos** (Events)
-- id (INTEGER, PRIMARY KEY)
-- nome_evento (TEXT, NOT NULL)
-- data_evento (DATE, NOT NULL)
-- descricao (TEXT)
-- imagem_url (TEXT)
+### Credenciais WiFi
 
-**tomazia_clientes** (Customers)
-- id (INTEGER, PRIMARY KEY)
-- user_id (INTEGER)
-- nome (TEXT)
-- email (TEXT)
-- telemovel (TEXT)
-- data_registro (DATETIME)
-
-**admin_users** (Administrators)
-- id (INTEGER, PRIMARY KEY)
-- username (TEXT, NOT NULL)
-- psw (TEXT, NOT NULL)
-
-## 🎨 Design Features
-
-- **Responsive Design**: Mobile-first approach, works on all devices
-- **Modern UI**: Clean, card-based interface
-- **Color Palette**: 
-  - Primary: #A52A2A (Brown)
-  - Accent: #8B0000 (Dark Red)
-  - Background: #f8f9fa
-- **Smooth Animations**: Fade-in effects and transitions
-- **Accessibility**: Semantic HTML and ARIA labels
-
-## 🔧 Configuration
-
-Edit `config.php` to customize:
+Edite `config.php`:
 
 ```php
-// Database path
-define('DB_PATH', __DIR__ . '/bd/bd_teste.db');
-
-// WiFi credentials
-define('WIFI_REDE', 'Your-Network-Name');
-define('WIFI_PASSWORD', 'Your-Password');
+define('WIFI_REDE', 'Nome-Da-Sua-Rede');
+define('WIFI_PASSWORD', 'Sua-Password');
 ```
 
-## 🛡️ Security Best Practices
+### Criar Conta Admin
 
-1. **HTTPS**: Always use HTTPS in production
-2. **Strong Passwords**: Use strong passwords for admin accounts
-3. **Regular Updates**: Keep PHP and dependencies updated
-4. **Backups**: Regular database backups
-5. **Error Logging**: Monitor error logs for suspicious activity
-
-## 📱 Usage
-
-### For Customers
-1. Visit the homepage
-2. Register with name, email, and phone
-3. Access WiFi credentials
-4. Browse the digital menu
-5. View upcoming events
-6. Find the bar location
-
-### For Administrators
-1. Login at `/login.php`
-2. Manage products in the admin panel
-3. Create and edit events
-4. View customer analytics
-5. Monitor adherence statistics
-
-## 🧪 Testing
-
-Run the included tests:
+1. Acesse `/criaradmin.php` no navegador
+2. Preencha username e password
+3. **IMPORTANTE**: Remova o ficheiro após criar a conta
 
 ```bash
-# Test all PHP syntax
-for file in *.php; do php -l "$file"; done
-
-# Test database connection
-php -r "require 'config.php'; getDbConnection();"
-
-# See TESTING_REPORT.md for detailed test results
+rm criaradmin.php  # Linux/Mac
+del criaradmin.php # Windows
 ```
 
-## 📝 Development Notes
+## 🔒 Segurança
 
-- All database queries use prepared statements
-- CSRF tokens are session-based
-- Cookies require HTTPS to work properly in production
-- The database path is relative for portability
+### Funcionalidades Implementadas
 
-## 🤝 Contributing
+- ✅ Proteção CSRF em todos os formulários
+- ✅ Prevenção XSS com `htmlspecialchars()`
+- ✅ Prevenção SQL Injection com queries parametrizadas
+- ✅ Cookies seguros (HTTPOnly, Secure, SameSite)
+- ✅ Password hashing com BCrypt
+- ✅ Headers de segurança no `.htaccess`
+- ✅ Proteção de ficheiros sensíveis
+- ✅ Gestão segura de sessões
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+### Checklist de Segurança
 
-## 📄 License
+- [ ] Ativar HTTPS em produção
+- [ ] Usar passwords fortes para admin
+- [ ] Remover `criaradmin.php` após uso
+- [ ] Configurar backups regulares
+- [ ] Manter PHP atualizado
+- [ ] Monitorizar logs de erro
 
-This project is proprietary software for Bar da Tomazia.
+## 🎨 Melhorias Implementadas
 
-## 👥 Authors
+### Slideshow na Galeria (bemvindo.php)
+- ✨ Transições suaves com fade
+- 🎯 Indicadores personalizados e responsivos
+- 📱 Design totalmente responsivo
+- 🔢 Contador de fotos
+- ⏸️ Pausa ao passar o mouse
+- 🎨 Controles estilizados e intuitivos
 
-- Development Team
+## 📝 Como Usar
+
+### Para Clientes
+
+1. Visite a homepage
+2. Registe-se com nome, email e telefone
+3. Aceda às credenciais WiFi
+4. Navegue pelo menu digital
+5. Veja eventos futuros
+6. Encontre a localização do bar
+
+### Para Administradores
+
+1. Faça login em `/login.php`
+2. Gira produtos no painel admin
+3. Crie e edite eventos
+4. Veja estatísticas de clientes
+5. Monitorize analytics
+
+## 🧪 Testes
+
+```bash
+# Testar sintaxe PHP
+for file in *.php; do php -l "$file"; done
+
+# Testar conexão à base de dados
+php -r "require 'config.php'; getDbConnection();"
+```
+
+## 📖 Documentação Adicional
+
+- [Guia de Instalação Completo](GUIA_INSTALACAO.md) - Instruções detalhadas de instalação
+- [.htaccess](.htaccess) - Configurações de segurança e rewrite rules
+
+## 🤝 Contribuir
+
+1. Faça fork do repositório
+2. Crie uma branch de funcionalidade
+3. Faça suas alterações
+4. Teste completamente
+5. Submeta um pull request
+
+## 📄 Licença
+
+Este projeto é software proprietário do Bar da Tomazia.
+
+## 👥 Autores
+
+- Equipa de Desenvolvimento
 - Bar da Tomazia
-
-## 📞 Support
-
-For issues or questions, please contact the development team.
 
 ---
 
-**Bar da Tomazia** - Where every moment is special! 🍸✨
+**Bar da Tomazia** - Onde cada momento é especial! 🍸✨
+
+Para mais informações, consulte o [Guia de Instalação](GUIA_INSTALACAO.md).
