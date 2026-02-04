@@ -53,6 +53,8 @@ Options -Indexes
     RewriteRule ^app/.*$ - [F,L]
     RewriteRule ^vendor/.*$ - [F,L]
     RewriteRule ^logs/.*$ - [F,L]
+    RewriteRule ^config/.*$ - [F,L]
+    RewriteRule ^storage/.*$ - [F,L]
 </IfModule>
 
 # Security headers

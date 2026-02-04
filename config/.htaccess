@@ -1,0 +1,11 @@
+# Deny access to config directory
+# This directory contains sensitive configuration files
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>
