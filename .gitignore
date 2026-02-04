@@ -43,3 +43,9 @@ test-*.html
 
 # Test files
 test_*.php
+
+# Storage directory contents (but keep directory structure)
+storage/logs/*
+storage/database/*
+!storage/logs/.gitkeep
+!storage/database/.gitkeep
